@@ -1,0 +1,6 @@
+interbotix/dynamixel_workbench_toolbox
+/home/botworks/3m_ws/devel/.private/dynamixel_workbench_toolbox/cmake.lock /home/botworks/3m_ws/devel/./cmake.lock
+/home/botworks/3m_ws/devel/.private/dynamixel_workbench_toolbox/share/dynamixel_workbench_toolbox/cmake/dynamixel_workbench_toolboxConfig.cmake /home/botworks/3m_ws/devel/share/dynamixel_workbench_toolbox/cmake/dynamixel_workbench_toolboxConfig.cmake
+/home/botworks/3m_ws/devel/.private/dynamixel_workbench_toolbox/share/dynamixel_workbench_toolbox/cmake/dynamixel_workbench_toolboxConfig-version.cmake /home/botworks/3m_ws/devel/share/dynamixel_workbench_toolbox/cmake/dynamixel_workbench_toolboxConfig-version.cmake
+/home/botworks/3m_ws/devel/.private/dynamixel_workbench_toolbox/lib/libdynamixel_workbench_toolbox.so /home/botworks/3m_ws/devel/lib/libdynamixel_workbench_toolbox.so
+/home/botworks/3m_ws/devel/.private/dynamixel_workbench_toolbox/lib/pkgconfig/dynamixel_workbench_toolbox.pc /home/botworks/3m_ws/devel/lib/pkgconfig/dynamixel_workbench_toolbox.pc

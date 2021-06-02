@@ -1,0 +1,6 @@
+interbotix/interbotix_xs_ros_control
+/home/botworks/3m_ws/devel/.private/interbotix_xs_ros_control/cmake.lock /home/botworks/3m_ws/devel/./cmake.lock
+/home/botworks/3m_ws/devel/.private/interbotix_xs_ros_control/share/interbotix_xs_ros_control/cmake/interbotix_xs_ros_controlConfig-version.cmake /home/botworks/3m_ws/devel/share/interbotix_xs_ros_control/cmake/interbotix_xs_ros_controlConfig-version.cmake
+/home/botworks/3m_ws/devel/.private/interbotix_xs_ros_control/share/interbotix_xs_ros_control/cmake/interbotix_xs_ros_controlConfig.cmake /home/botworks/3m_ws/devel/share/interbotix_xs_ros_control/cmake/interbotix_xs_ros_controlConfig.cmake
+/home/botworks/3m_ws/devel/.private/interbotix_xs_ros_control/lib/interbotix_xs_ros_control/xs_hardware_interface /home/botworks/3m_ws/devel/lib/interbotix_xs_ros_control/xs_hardware_interface
+/home/botworks/3m_ws/devel/.private/interbotix_xs_ros_control/lib/pkgconfig/interbotix_xs_ros_control.pc /home/botworks/3m_ws/devel/lib/pkgconfig/interbotix_xs_ros_control.pc

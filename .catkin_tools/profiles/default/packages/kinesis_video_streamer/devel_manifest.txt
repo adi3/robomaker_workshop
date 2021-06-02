@@ -1,0 +1,7 @@
+kinesis_video_streamer
+/home/botworks/3m_ws/devel/.private/kinesis_video_streamer/cmake.lock /home/botworks/3m_ws/devel/./cmake.lock
+/home/botworks/3m_ws/devel/.private/kinesis_video_streamer/share/kinesis_video_streamer/cmake/kinesis_video_streamerConfig.cmake /home/botworks/3m_ws/devel/share/kinesis_video_streamer/cmake/kinesis_video_streamerConfig.cmake
+/home/botworks/3m_ws/devel/.private/kinesis_video_streamer/share/kinesis_video_streamer/cmake/kinesis_video_streamerConfig-version.cmake /home/botworks/3m_ws/devel/share/kinesis_video_streamer/cmake/kinesis_video_streamerConfig-version.cmake
+/home/botworks/3m_ws/devel/.private/kinesis_video_streamer/lib/libkinesis_video_streamer_lib.so /home/botworks/3m_ws/devel/lib/libkinesis_video_streamer_lib.so
+/home/botworks/3m_ws/devel/.private/kinesis_video_streamer/lib/kinesis_video_streamer/kinesis_video_streamer /home/botworks/3m_ws/devel/lib/kinesis_video_streamer/kinesis_video_streamer
+/home/botworks/3m_ws/devel/.private/kinesis_video_streamer/lib/pkgconfig/kinesis_video_streamer.pc /home/botworks/3m_ws/devel/lib/pkgconfig/kinesis_video_streamer.pc

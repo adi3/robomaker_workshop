@@ -1,0 +1,5 @@
+interbotix/interbotix_xsarm_descriptions
+/home/botworks/3m_ws/devel/.private/interbotix_xsarm_descriptions/cmake.lock /home/botworks/3m_ws/devel/./cmake.lock
+/home/botworks/3m_ws/devel/.private/interbotix_xsarm_descriptions/share/interbotix_xsarm_descriptions/cmake/interbotix_xsarm_descriptionsConfig-version.cmake /home/botworks/3m_ws/devel/share/interbotix_xsarm_descriptions/cmake/interbotix_xsarm_descriptionsConfig-version.cmake
+/home/botworks/3m_ws/devel/.private/interbotix_xsarm_descriptions/share/interbotix_xsarm_descriptions/cmake/interbotix_xsarm_descriptionsConfig.cmake /home/botworks/3m_ws/devel/share/interbotix_xsarm_descriptions/cmake/interbotix_xsarm_descriptionsConfig.cmake
+/home/botworks/3m_ws/devel/.private/interbotix_xsarm_descriptions/lib/pkgconfig/interbotix_xsarm_descriptions.pc /home/botworks/3m_ws/devel/lib/pkgconfig/interbotix_xsarm_descriptions.pc
