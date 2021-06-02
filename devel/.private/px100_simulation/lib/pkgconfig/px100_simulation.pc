@@ -1,8 +1,0 @@
-prefix=/home/ubuntu/environment/3m_ws/devel/.private/px100_simulation
-
-Name: px100_simulation
-Description: Description of px100_simulation
-Version: 0.1.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 
