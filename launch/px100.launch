@@ -1,58 +1,69 @@
 <launch>
 
-  <arg name="dof"                               default="4"/>
-  <arg name="robot_model"                       default="px100"/>
-  <arg name="world_name"                        default="$(find px100_simulation)/worlds/px100-0.world"/>
-  <arg name="table_height"                      default="0.715"/>
-  <arg name="x_offset"                          default="-0.15"/>
-  
+  <arg name="sim" default="true"/>
+  <arg name="robot_model" default="px100"/>
+  <arg name="dof" default="4"/>
+  <arg name="world_name" default="$(find px100_simulation)/worlds/px100-0.world"/>
 
-  <!-- Set up simulation world -->
-  <include file="$(find px100_simulation)/launch/gazebo.launch">
-    <arg name="robot_model" value="$(arg robot_model)" />
-    <arg name="world_name" value="$(arg world_name)" />
-    <arg name="table_height" value="$(arg table_height)" />
-    <arg name="x_offset" value="$(arg x_offset)" />
-  </include>
-  
-  
-  <!-- Publish statics and visuals of robot arm via .urdf.xacro -->
+
+
+  <!-- TODO: see if description.launch is only needed during sim -->
   <include file="$(find px100_simulation)/launch/description.launch" />
+
+  <group if="$(arg sim)">
+    <include file="$(find px100_simulation)/launch/simulation.launch">
+      <arg name="world_name" value="$(arg world_name)"/>
+      <arg name="robot_model" value="$(arg robot_model)"/>
+    </include>
+  </group>
+  
+  <group unless="$(arg sim)">
+    <include file="$(find px100_simulation)/launch/camera.launch" ns="$(arg robot_model)" />
+  </group>
+	
+  <!-- Publish statics and visuals of robot arm via .urdf.xacro -->
+  <!-- <include file="$(find interbotix_xsarm_descriptions)/launch/xsarm_description.launch">
+   <arg name="robot_model"                       value="$(arg robot_model)"/>
+   <arg name="load_gazebo_configs"               value="true"/>
+   <arg name="use_rviz"                          value="false"/>
+   <arg name="use_joint_pub_gui"                 value="false"/>
+  </include> -->
   
   
+  <!-- TODO: see if controllers are only needed during sim -->
   <!-- Publish dynamics for the robot, tune PID controls here -->
   <rosparam file="$(find px100_simulation)/config/controllers.yaml" command="load" ns="$(arg robot_model)"/>
   <node pkg="controller_manager" name="controller_spawner" type="controller_manager" respawn="false" output="screen"
     ns="$(arg robot_model)" args="spawn arm_controller gripper_controller joint_state_controller"/>
 
 
+  <!-- TODO: see if moveit setup is only needed during sim -->
   <!-- Launch moveit planning integration -->
-  <!--<include file="$(find interbotix_xsarm_moveit)/launch/move_group.launch" ns="$(arg robot_model)">-->
-  <!--  <arg name="robot_model"                       value="$(arg robot_model)"/>-->
-  <!--  <arg name="dof"                               value="$(arg dof)"/>-->
-  <!--  <arg name="fake_execution"                    value="false"/>-->
-  <!--</include>-->
+  <!-- <include file="$(find interbotix_xsarm_moveit)/launch/move_group.launch" ns="$(arg robot_model)">
+    <arg name="robot_model"                       value="$(arg robot_model)"/>
+    <arg name="dof"                               value="$(arg dof)"/>
+    <arg name="fake_execution"                    value="false"/>
+  </include> -->
   
 
-  <!-- Start streaming camera data to KVS -->
-  <!--<include file="$(find px100_simulation)/launch/kvstreamer.launch" ns="$(arg robot_model)" />-->
+  <include file="$(find px100_simulation)/launch/kvstreamer.launch" ns="$(arg robot_model)" />
 
 
-  <!-- Open Rviz visualiztion for the system -->
-  <node name="rviz" pkg="rviz" type="rviz" respawn="false" output="screen"
+  <!--TODO: Add rviz + kinematics.yaml file in code -->
+  <!--Open Rviz visualiztion for the system -->
+  <!--<node name="rviz" pkg="rviz" type="rviz" respawn="false" output="screen"
     args="-f world -d $(find px100_simulation)/rviz/px100.rviz" ns="$(arg robot_model)">
-  </node>
-  
+  </node>-->
   
   <!-- Start image view node for taking camera shots -->
   <node name="image_saver" pkg="image_view" type="image_saver" output="screen" ns="$(arg robot_model)">
     <remap from="image" to="camera/image_raw" />
     <param name="save_all_image" value="false" />
-    <param name="filename_format" value="$(find px100_simulation)/nodes/image_%04d.png" />
+    <param name="filename_format" value="$(find px100_simulation)/scripts/image_%04d.png" />
   </node>
-  
-  
+
+
   <!-- Set robot to initial position -->
-  <node pkg="px100_simulation" name="init" type="init.py" output="screen" />
-  
+  <!--<node pkg="px100_simulation" name="init" type="init.py" output="screen" />-->
+
 </launch>
