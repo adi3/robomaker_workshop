@@ -1,6 +1,0 @@
-<launch>
-    <rosparam file="$(find px100_simulation)/config/kinesis.yaml" command="load" />
-    
-    <include file="$(find h264_video_encoder)/launch/h264_video_encoder.launch" />
-    <include file="$(find kinesis_video_streamer)/launch/kinesis_video_streamer.launch" />
-</launch>
