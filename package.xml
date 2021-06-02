@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>px100_simulation</name>
+  <version>0.1.0</version>
+  <description>The px100_simulation package</description>
+
+  <maintainer email="adsnghw@amazon.com">Adi Singh</maintainer>
+  <license>Amazon Software License</license>
+
+  <url type="website">https://aws.amazon.com/robomaker/</url> 
+  <author email="adsnghw@amazon.com">Adi Singh</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <exec_depend>xacro</exec_depend>
+  <exec_depend>image_view</exec_depend>
+  <exec_depend>kinesis_manager</exec_depend>
+  <exec_depend>kinesis_video_msgs</exec_depend>
+  <exec_depend>kinesis_video_streamer</exec_depend>
+  <exec_depend>h264_video_encoder</exec_depend>
+
+  <export>
+    <gazebo_ros gazebo_model_path="${prefix}/models" gazebo_resource_path="${prefix}"/>
+  </export>
+  
+</package>

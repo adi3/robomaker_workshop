@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+      <legacyModeNS>true</legacyModeNS>
+    </plugin>
+  </gazebo>
+
+  <gazebo reference="px100/base_link">
+    <material>Custom/Interbotix</material>
+    <dampingFactor>0.1</dampingFactor>
+  </gazebo>
+
+  <gazebo reference="px100/shoulder_link">
+    <material>Custom/Interbotix</material>
+    <dampingFactor>0.1</dampingFactor>
+  </gazebo>
+
+  <gazebo reference="px100/upper_arm_link">
+    <material>Custom/Interbotix</material>
+    <dampingFactor>0.1</dampingFactor>
+  </gazebo>
+
+  <gazebo reference="px100/forearm_link">
+    <material>Custom/Interbotix</material>
+    <dampingFactor>0.1</dampingFactor>
+  </gazebo>
+
+  <gazebo reference="px100/upper_forearm_link">
+    <material>Custom/Interbotix</material>
+    <dampingFactor>0.1</dampingFactor>
+  </gazebo>
+
+  <gazebo reference="px100/lower_forearm_link">
+    <material>Custom/Interbotix</material>
+    <dampingFactor>0.1</dampingFactor>
+  </gazebo>
+
+  <gazebo reference="px100/wrist_link">
+    <material>Custom/Interbotix</material>
+    <dampingFactor>0.1</dampingFactor>
+  </gazebo>
+
+  <gazebo reference="px100/gripper_link">
+    <material>Custom/Interbotix</material>
+    <dampingFactor>0.1</dampingFactor>
+  </gazebo>
+
+  <gazebo reference="px100/gripper_prop_link">
+    <material>Custom/Interbotix</material>
+    <dampingFactor>0.1</dampingFactor>
+  </gazebo>
+
+  <gazebo reference="px100/gripper_bar_link">
+    <material>Custom/Interbotix</material>
+  </gazebo>
+
+  <gazebo reference="px100/left_finger_link">
+    <material>Custom/Interbotix</material>
+    <dampingFactor>0.1</dampingFactor>
+  </gazebo>
+
+  <gazebo reference="px100/right_finger_link">
+    <material>Custom/Interbotix</material>
+    <dampingFactor>0.1</dampingFactor>
+  </gazebo>
+
+  <gazebo reference="px100/ar_tag_link">
+    <material>Custom/Interbotix</material>
+  </gazebo>
+
+  <gazebo reference="ee_arm">
+    <disableFixedJointLumping>true</disableFixedJointLumping>
+  </gazebo>
+
+  <gazebo reference="ar_tag">
+    <disableFixedJointLumping>true</disableFixedJointLumping>
+  </gazebo>
+
+  <gazebo reference="gripper_bar">
+    <disableFixedJointLumping>true</disableFixedJointLumping>
+  </gazebo>
+
+  <gazebo reference="ee_bar">
+    <disableFixedJointLumping>true</disableFixedJointLumping>
+  </gazebo>
+
+  <gazebo reference="ee_gripper">
+    <disableFixedJointLumping>true</disableFixedJointLumping>
+  </gazebo>
+
+  <gazebo reference="px100/right_finger_link">
+    <kp>1000000.0</kp>
+    <kd>1.0</kd>
+    <mu1>500.0</mu1>
+    <mu2>500.0</mu2>
+    <minDepth>0.010</minDepth>
+  </gazebo>
+
+  <gazebo reference="px100/left_finger_link">
+    <kp>1000000.0</kp>
+    <kd>1.0</kd>
+    <mu1>500.0</mu1>
+    <mu2>500.0</mu2>
+    <minDepth>0.010</minDepth>
+  </gazebo>
+
+</robot>
