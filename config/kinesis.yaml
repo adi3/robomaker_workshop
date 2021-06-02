@@ -1,0 +1,49 @@
+h264_video_encoder:
+  # Topic on which camera is publishing sensor_msgs/Image message
+  subscription_topic: "/px100/usb_cam/image_raw"
+  
+  # Topic for publishing the encoded video stream (kinesis_video_msgs/KinesisVideoFrame)
+  publication_topic: "/video/encoded"
+  
+  # The numerator when expressing the frame rate as a rational number
+  fps_numerator: 30
+  
+  # The denominator when expressing the frame rate as a rational number (default: 1)
+  fps_denominator: 1
+  
+  # The target bit rate in bits per second of the output video stream
+  bitrate: 2048000
+
+
+kinesis_video_streamer:
+
+  aws_client_configuration:
+    region: "eu-central-1"
+    max_retries: 10
+    # Milliseconds to wait before timing out a request
+    connect_timeout_ms: 9000
+    request_timeout_ms: 9000
+  
+  
+  kinesis_video:
+    stream0:
+      # Kinesis Video Stream name
+      # Stream created in case it doesn't already exist
+      stream_name: "px100Stream"
+      
+      # Topic name to subscribe and receive the image/video data from h264 module
+      subscription_topic: /video/encoded
+      
+      # Topic type
+        # 1: KinesisVideoFrame transport, enabling h264 streaming
+        # 2: sensor_msgs::Image transport.
+        # 3: Like 1 but with AWS Rekognition support built-in. Results will be read from 'rekognition_data_stream' and published onto 'rekognition_topic_name'.
+      topic_type: 1
+      
+      # Frame rate should match the encoder's (and the camera's) frame rate
+      # Take this from Gazebo camera model for simulation and device specs for actual camera
+      frame_rate: 30
+      
+      # Let the Producer SDK create timestamps as the frames arrive
+      frame_timecodes: false
+

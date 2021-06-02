@@ -1,0 +1,36 @@
+<launch>
+
+  <arg name="robot_model"                       default="px100"/>
+  <arg name="robot_name"                        default="$(arg robot_model)"/>
+  <arg name="use_world_frame"                   default="true"/>
+  <!--<arg name="use_rviz"                          default="false"/>-->
+  <arg name="load_gazebo_configs"               default="true"/>
+  <!--<arg name="rate"                              default="10"/>-->
+  <!--<arg name="source_list"                       default="[]"/>-->
+  <!--<arg name="rvizconfig"                        default="$(find interbotix_xsarm_descriptions)/rviz/xsarm_description.rviz" />-->
+  <arg name="model"                             default="$(find px100_simulation)/urdf/$(arg robot_model).urdf.xacro
+                                                         use_world_frame:=$(arg use_world_frame)
+                                                         load_gazebo_configs:=$(arg load_gazebo_configs)"/>
+
+  <param name="$(arg robot_name)/robot_description" command="xacro $(arg model)" />
+  
+  <!-- <node
+    name="joint_state_publisher"
+    pkg="joint_state_publisher"
+    type="joint_state_publisher"
+    ns="$(arg robot_name)">
+    <param name="rate" value="$(arg rate)"/>
+    <rosparam param="source_list" subst_value="True">$(arg source_list)</rosparam>
+    <rosparam file="$(find px100_simulation)/config/joints.yaml" command="load" />
+  </node> -->
+  
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" ns="$(arg robot_name)" />
+
+  <!--<node if="$(arg use_rviz)"-->
+  <!--  name="rviz"-->
+  <!--  pkg="rviz"-->
+  <!--  type="rviz"-->
+  <!--  args="-d $(arg rvizconfig)"-->
+  <!--  ns="$(arg robot_name)"/>-->
+
+</launch>
