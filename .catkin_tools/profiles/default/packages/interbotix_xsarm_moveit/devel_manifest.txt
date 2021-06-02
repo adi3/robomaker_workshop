@@ -1,5 +1,0 @@
-interbotix_xsarm_moveit
-/home/ubuntu/environment/3m_ws/devel/.private/interbotix_xsarm_moveit/cmake.lock /home/ubuntu/environment/3m_ws/devel/./cmake.lock
-/home/ubuntu/environment/3m_ws/devel/.private/interbotix_xsarm_moveit/share/interbotix_xsarm_moveit/cmake/interbotix_xsarm_moveitConfig.cmake /home/ubuntu/environment/3m_ws/devel/share/interbotix_xsarm_moveit/cmake/interbotix_xsarm_moveitConfig.cmake
-/home/ubuntu/environment/3m_ws/devel/.private/interbotix_xsarm_moveit/share/interbotix_xsarm_moveit/cmake/interbotix_xsarm_moveitConfig-version.cmake /home/ubuntu/environment/3m_ws/devel/share/interbotix_xsarm_moveit/cmake/interbotix_xsarm_moveitConfig-version.cmake
-/home/ubuntu/environment/3m_ws/devel/.private/interbotix_xsarm_moveit/lib/pkgconfig/interbotix_xsarm_moveit.pc /home/ubuntu/environment/3m_ws/devel/lib/pkgconfig/interbotix_xsarm_moveit.pc

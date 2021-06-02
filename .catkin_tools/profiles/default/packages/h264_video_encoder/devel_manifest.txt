@@ -1,7 +1,0 @@
-h264_video_encoder
-/home/botworks/3m_ws/devel/.private/h264_video_encoder/cmake.lock /home/botworks/3m_ws/devel/./cmake.lock
-/home/botworks/3m_ws/devel/.private/h264_video_encoder/share/h264_video_encoder/cmake/h264_video_encoderConfig-version.cmake /home/botworks/3m_ws/devel/share/h264_video_encoder/cmake/h264_video_encoderConfig-version.cmake
-/home/botworks/3m_ws/devel/.private/h264_video_encoder/share/h264_video_encoder/cmake/h264_video_encoderConfig.cmake /home/botworks/3m_ws/devel/share/h264_video_encoder/cmake/h264_video_encoderConfig.cmake
-/home/botworks/3m_ws/devel/.private/h264_video_encoder/lib/libh264_video_encoder_lib.a /home/botworks/3m_ws/devel/lib/libh264_video_encoder_lib.a
-/home/botworks/3m_ws/devel/.private/h264_video_encoder/lib/h264_video_encoder/h264_video_encoder /home/botworks/3m_ws/devel/lib/h264_video_encoder/h264_video_encoder
-/home/botworks/3m_ws/devel/.private/h264_video_encoder/lib/pkgconfig/h264_video_encoder.pc /home/botworks/3m_ws/devel/lib/pkgconfig/h264_video_encoder.pc

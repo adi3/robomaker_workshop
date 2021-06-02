@@ -1,5 +1,0 @@
-interbotix/interbotix_xsarm_control
-/home/botworks/3m_ws/devel/.private/interbotix_xsarm_control/cmake.lock /home/botworks/3m_ws/devel/./cmake.lock
-/home/botworks/3m_ws/devel/.private/interbotix_xsarm_control/share/interbotix_xsarm_control/cmake/interbotix_xsarm_controlConfig.cmake /home/botworks/3m_ws/devel/share/interbotix_xsarm_control/cmake/interbotix_xsarm_controlConfig.cmake
-/home/botworks/3m_ws/devel/.private/interbotix_xsarm_control/share/interbotix_xsarm_control/cmake/interbotix_xsarm_controlConfig-version.cmake /home/botworks/3m_ws/devel/share/interbotix_xsarm_control/cmake/interbotix_xsarm_controlConfig-version.cmake
-/home/botworks/3m_ws/devel/.private/interbotix_xsarm_control/lib/pkgconfig/interbotix_xsarm_control.pc /home/botworks/3m_ws/devel/lib/pkgconfig/interbotix_xsarm_control.pc

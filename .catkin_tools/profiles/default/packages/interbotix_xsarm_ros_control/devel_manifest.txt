@@ -1,5 +1,0 @@
-interbotix/interbotix_xsarm_ros_control
-/home/botworks/3m_ws/devel/.private/interbotix_xsarm_ros_control/cmake.lock /home/botworks/3m_ws/devel/./cmake.lock
-/home/botworks/3m_ws/devel/.private/interbotix_xsarm_ros_control/share/interbotix_xsarm_ros_control/cmake/interbotix_xsarm_ros_controlConfig.cmake /home/botworks/3m_ws/devel/share/interbotix_xsarm_ros_control/cmake/interbotix_xsarm_ros_controlConfig.cmake
-/home/botworks/3m_ws/devel/.private/interbotix_xsarm_ros_control/share/interbotix_xsarm_ros_control/cmake/interbotix_xsarm_ros_controlConfig-version.cmake /home/botworks/3m_ws/devel/share/interbotix_xsarm_ros_control/cmake/interbotix_xsarm_ros_controlConfig-version.cmake
-/home/botworks/3m_ws/devel/.private/interbotix_xsarm_ros_control/lib/pkgconfig/interbotix_xsarm_ros_control.pc /home/botworks/3m_ws/devel/lib/pkgconfig/interbotix_xsarm_ros_control.pc
