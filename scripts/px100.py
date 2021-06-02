@@ -6,7 +6,7 @@ import numpy as np
 import moveit_commander
 import geometry_msgs.msg
 from moveit_commander.conversions import pose_to_list
-from interbotix_xs_modules.arm import InterbotixManipulatorXS
+# from interbotix_xs_modules.arm import InterbotixManipulatorXS
 
 
 # Check whether actual position is close to goal within the given tolerance

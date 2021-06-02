@@ -5,11 +5,11 @@ find_package(catkin REQUIRED)
 catkin_package()
 
 install(PROGRAMS
-  nodes/px100.py
-  nodes/init.py
-  nodes/collect.py
-  nodes/aws_utilities.py
-  nodes/generate_worlds.py
+  scripts/px100.py
+  scripts/init.py
+  scripts/collect.py
+  scripts/aws_utilities.py
+  scripts/generate_worlds.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

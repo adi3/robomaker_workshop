@@ -10,7 +10,9 @@ import aws_utilities as util
 KVS_STREAM = "px100Stream"
 S3_BUCKET = "adsnghw-misc" #"custom-labels-console-eu-central-1-8a96d04acd"
 S3_PATH = "" #"datasets/PX100/"
-ARN_BASE = "arn:aws:rekognition:eu-central-1:517502204741:project/PX100/"
+PROJECT_ARN = "arn:aws:rekognition:eu-central-1:517502204741:project/PX100/1621861684686"
+SIM_MODEL = "version/PX100.2021-05-24T15.08.29/1621861709475"
+REAL_MODEL = "version/PX100.2021-05-28T12.46.07/1622198767106"
 CONFIDENCE_THRESHOLD = 80
 
 
@@ -30,12 +32,7 @@ def main():
       _kvs = True
 
   # Select model based on real or simulated option
-  project_arn = ARN_BASE + "1621861684686"
-  sim_model = ARN_BASE + "version/PX100.2021-05-24T15.08.29/1621861709475"
-  real_model = ARN_BASE + "version/PX100.2021-05-28T12.46.07/1622198767106"
-  model_arn = sim_model if _sim else real_model
-  
-  util.snap_image()
+  model_arn = PROJECT_ARN + (SIM_MODEL if _sim else REAL_MODEL)
   
   try:
     rospy.loginfo("Checking state of Rekognition model...")
