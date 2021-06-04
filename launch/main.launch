@@ -6,24 +6,19 @@
   <arg name="world_name" default="$(find robomaker_workshop)/worlds/px100-0.world"/>
 
 
+  <!-- This group gets executed only when sim is true -->
   <group if="$(arg sim)">
+    
+    <!-- Publish statics and visuals of robot arm via .urdf.xacro -->
+    <include file="$(find robomaker_workshop)/launch/px100.launch" />
+    
+    <!-- Bring up simulation environment -->
     <include file="$(find robomaker_workshop)/launch/simulation.launch">
       <arg name="world_name" value="$(arg world_name)"/>
       <arg name="robot_model" value="$(arg robot_model)"/>
     </include>
     
-    <!-- Publish statics and visuals of robot arm via .urdf.xacro -->
-    <!-- <include file="$(find interbotix_xsarm_descriptions)/launch/xsarm_description.launch">
-     <arg name="robot_model"                       value="$(arg robot_model)"/>
-     <arg name="load_gazebo_configs"               value="true"/>
-     <arg name="use_rviz"                          value="false"/>
-     <arg name="use_joint_pub_gui"                 value="false"/>
-    </include> -->
-    
-    <!-- TODO: see if description.launch is only needed during sim -->
-    <include file="$(find robomaker_workshop)/launch/px100.launch" />
-    
-      <!-- TODO: see if controllers are only needed during sim -->
+    <!-- TODO: see if controllers are only needed during sim -->
     <!-- Publish dynamics for the robot, tune PID controls here -->
     <rosparam file="$(find robomaker_workshop)/config/controllers.yaml" command="load" ns="$(arg robot_model)"/>
     <node pkg="controller_manager" name="controller_spawner" type="controller_manager" respawn="false" output="screen"
@@ -47,23 +42,25 @@
   </group>
   
   
-  
-  
+   <!-- This group gets executed only when sim is false -->
   <group unless="$(arg sim)">
+    <!-- Extract local USB camera stream and publish to ROS -->
     <include file="$(find robomaker_workshop)/launch/camera.launch" ns="$(arg robot_model)" />
   </group>
 	
-
-  
-
-  <include file="$(find robomaker_workshop)/launch/kvstreamer.launch" ns="$(arg robot_model)" />
-
-
+	
+	 <!--Everything here gets executed regardless of the state of sim -->
+	 
   <!-- Start image view node for taking camera shots -->
   <node name="image_saver" pkg="image_view" type="image_saver" output="screen" ns="$(arg robot_model)">
     <remap from="image" to="camera/image_raw" />
     <param name="save_all_image" value="false" />
     <param name="filename_format" value="$(find robomaker_workshop)/scripts/image_%04d.png" />
   </node>
+  
+  <!-- Publish camera stream to Kinesis Video Streams -->
+  <include file="$(find robomaker_workshop)/launch/kvstreamer.launch" ns="$(arg robot_model)" />
+
+
 
 </launch>

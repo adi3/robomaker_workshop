@@ -104,7 +104,7 @@ class PX100(object):
     if self._SIM:
       home_positions = [0] * len(self._arm.get_active_joints())
       self._arm.go(home_positions)
-      # check(home_positions, self._arm.get_current_joint_values(), 0.01)
+      return check(home_positions, self._arm.get_current_joint_values(), 0.01)
     else:
       self._arm.go_to_home_pose()
 
@@ -115,7 +115,7 @@ class PX100(object):
     if self._SIM:
       self._arm.go(self._SLEEP_POSITIONS)
       self._arm.stop()
-      # check(self._SLEEP_POSITIONS, self._arm.get_current_joint_values(), 0.01)
+      return check(self._SLEEP_POSITIONS, self._arm.get_current_joint_values(), 0.01)
     else:
       self._arm.go_to_sleep_pose()
     

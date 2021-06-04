@@ -4,24 +4,6 @@
   <arg name="robot_name"                        default="$(arg robot_model)"/>
 
   <param name="$(arg robot_name)/robot_description" command="xacro $(find robomaker_workshop)/urdf/$(arg robot_model).urdf.xacro" />
-  
-  <!-- <node
-    name="joint_state_publisher"
-    pkg="joint_state_publisher"
-    type="joint_state_publisher"
-    ns="$(arg robot_name)">
-    <param name="rate" value="$(arg rate)"/>
-    <rosparam param="source_list" subst_value="True">$(arg source_list)</rosparam>
-    <rosparam file="$(find robomaker_workshop)/config/joints.yaml" command="load" />
-  </node> -->
-  
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" ns="$(arg robot_name)" />
-
-  <!--<node if="$(arg use_rviz)"-->
-  <!--  name="rviz"-->
-  <!--  pkg="rviz"-->
-  <!--  type="rviz"-->
-  <!--  args="-d $(arg rvizconfig)"-->
-  <!--  ns="$(arg robot_name)"/>-->
-
+  
 </launch>
