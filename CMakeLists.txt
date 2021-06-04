@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(px100_simulation)
+project(robomaker_workshop)
 
 find_package(catkin REQUIRED)
 catkin_package()
