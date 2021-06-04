@@ -1,6 +1,6 @@
 <launch>
 
-  <arg name="robot_model"                       default="px100"/>
+  <arg name="robot_model"                       default=""/>
   <arg name="robot_name"                        default="$(arg robot_model)"/>
 
   <param name="$(arg robot_name)/robot_description" command="xacro $(find robomaker_workshop)/urdf/$(arg robot_model).urdf.xacro" />
