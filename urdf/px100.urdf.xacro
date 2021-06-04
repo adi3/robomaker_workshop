@@ -1,39 +1,31 @@
 <?xml version="1.0"?>
 <robot name="px100" xmlns:xacro="http://ros.org/wiki/xacro">
-
-  <xacro:arg name="use_world_frame" default="false"/>
-  <xacro:arg name="load_gazebo_configs" default="false"/>
-
+  
   <xacro:property name="pi_offset" value="0.00001"/>
-
-  <xacro:if value="$(arg load_gazebo_configs)">
-    <xacro:include filename="$(find px100_simulation)/config/px100.gazebo"/>
-  </xacro:if>
+  <xacro:include filename="$(find robomaker_workshop)/config/px100.gazebo"/>
 
   <material name="interbotix_black">
-    <texture filename="package://px100_simulation/media/materials/textures/interbotix_black.png"/>
+    <texture filename="package://robomaker_workshop/media/materials/textures/interbotix_black.png"/>
   </material>
 
-  <xacro:if value="$(arg use_world_frame)">
-    <link name="world"/>
-    <joint name="fixed" type="fixed">
-      <parent link="world"/>
-      <child link="px100/base_link"/>
-    </joint>
-  </xacro:if>
+  <link name="world"/>
+  <joint name="fixed" type="fixed">
+    <parent link="world"/>
+    <child link="px100/base_link"/>
+  </joint>
 
   <link name="px100/base_link">
     <visual>
       <origin rpy="0 0 ${pi/2}" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://px100_simulation/meshes/px100_1_base.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://robomaker_workshop/meshes/px100_1_base.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="interbotix_black"/>
     </visual>
     <collision>
       <origin rpy="0 0 ${pi/2}" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://px100_simulation/meshes/px100_1_base.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://robomaker_workshop/meshes/px100_1_base.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
     <inertial>
@@ -66,14 +58,14 @@
     <visual>
       <origin rpy="0 0 ${pi/2}" xyz="0 0 -0.0022"/>
       <geometry>
-        <mesh filename="package://px100_simulation/meshes/px100_2_shoulder.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://robomaker_workshop/meshes/px100_2_shoulder.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="interbotix_black"/>
     </visual>
     <collision>
       <origin rpy="0 0 ${pi/2}" xyz="0 0 -0.0022"/>
       <geometry>
-        <mesh filename="package://px100_simulation/meshes/px100_2_shoulder.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://robomaker_workshop/meshes/px100_2_shoulder.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
     <inertial>
@@ -106,14 +98,14 @@
     <visual>
       <origin rpy="0 0 ${pi/2}" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://px100_simulation/meshes/px100_3_upper_arm.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://robomaker_workshop/meshes/px100_3_upper_arm.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="interbotix_black"/>
     </visual>
     <collision>
       <origin rpy="0 0 ${pi/2}" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://px100_simulation/meshes/px100_3_upper_arm.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://robomaker_workshop/meshes/px100_3_upper_arm.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
     <inertial>
@@ -146,14 +138,14 @@
     <visual>
       <origin rpy="0 0 ${pi/2}" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://px100_simulation/meshes/px100_4_forearm.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://robomaker_workshop/meshes/px100_4_forearm.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="interbotix_black"/>
     </visual>
     <collision>
       <origin rpy="0 0 ${pi/2}" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://px100_simulation/meshes/px100_4_forearm.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://robomaker_workshop/meshes/px100_4_forearm.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
     <inertial>
@@ -186,14 +178,14 @@
     <visual>
       <origin rpy="0 0 ${pi/2}" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://px100_simulation/meshes/px100_5_gripper.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://robomaker_workshop/meshes/px100_5_gripper.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="interbotix_black"/>
     </visual>
     <collision>
       <origin rpy="0 0 ${pi/2}" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://px100_simulation/meshes/px100_5_gripper.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://robomaker_workshop/meshes/px100_5_gripper.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
     <inertial>
@@ -240,14 +232,14 @@
     <visual>
       <origin rpy="0 0 ${pi/2}" xyz="-0.0685 0 0"/>
       <geometry>
-        <mesh filename="package://px100_simulation/meshes/px100_6_gripper_prop.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://robomaker_workshop/meshes/px100_6_gripper_prop.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="interbotix_black"/>
     </visual>
     <collision>
       <origin rpy="0 0 ${pi/2}" xyz="-0.0685 0 0"/>
       <geometry>
-        <mesh filename="package://px100_simulation/meshes/px100_6_gripper_prop.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://robomaker_workshop/meshes/px100_6_gripper_prop.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
     <inertial>
@@ -270,14 +262,14 @@
     <visual>
       <origin rpy="0 0 ${pi/2}" xyz="-0.063 0 0"/>
       <geometry>
-        <mesh filename="package://px100_simulation/meshes/px100_7_gripper_bar.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://robomaker_workshop/meshes/px100_7_gripper_bar.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="interbotix_black"/>
     </visual>
     <collision>
       <origin rpy="0 0 ${pi/2}" xyz="-0.063 0 0"/>
       <geometry>
-        <mesh filename="package://px100_simulation/meshes/px100_7_gripper_bar.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://robomaker_workshop/meshes/px100_7_gripper_bar.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
     <inertial>
@@ -325,14 +317,14 @@
     <visual>
       <origin rpy="${pi} ${pi} 0" xyz="0 0.005 0"/>
       <geometry>
-        <mesh filename="package://px100_simulation/meshes/px100_8_gripper_finger.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://robomaker_workshop/meshes/px100_8_gripper_finger.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="interbotix_black"/>
     </visual>
     <collision>
       <origin rpy="${pi} ${pi} 0" xyz="0 0.005 0"/>
       <geometry>
-        <mesh filename="package://px100_simulation/meshes/px100_8_gripper_finger.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://robomaker_workshop/meshes/px100_8_gripper_finger.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
     <inertial>
@@ -349,9 +341,6 @@
     <parent link="px100/fingers_link"/>
     <child link="px100/right_finger_link"/>
     <dynamics friction="0.1"/>
-    <xacro:unless value="$(arg load_gazebo_configs)">
-      <mimic joint="left_finger" multiplier="-1" offset="0"/>
-    </xacro:unless>
   </joint>
 
   <transmission name="trans_right_finger">
@@ -368,14 +357,14 @@
     <visual>
       <origin rpy="0 ${pi} 0" xyz="0 -0.005 0"/>
       <geometry>
-        <mesh filename="package://px100_simulation/meshes/px100_8_gripper_finger.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://robomaker_workshop/meshes/px100_8_gripper_finger.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="interbotix_black"/>
     </visual>
     <collision>
       <origin rpy="0 ${pi} 0" xyz="0 -0.005 0"/>
       <geometry>
-        <mesh filename="package://px100_simulation/meshes/px100_8_gripper_finger.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://robomaker_workshop/meshes/px100_8_gripper_finger.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
     <inertial>

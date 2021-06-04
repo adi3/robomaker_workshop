@@ -6,7 +6,7 @@ import numpy as np
 import moveit_commander
 import geometry_msgs.msg
 from moveit_commander.conversions import pose_to_list
-# from interbotix_xs_modules.arm import InterbotixManipulatorXS
+from interbotix_xs_modules.arm import InterbotixManipulatorXS
 
 
 # Check whether actual position is close to goal within the given tolerance
@@ -28,7 +28,7 @@ def check(goal, actual, tolerance):
 
 class PX100(object):
   def __init__(self, simulated=True):
-    super(PX100, self).__init__(simulated)
+    super(PX100, self).__init__()
 
     self._SIM = simulated
     self._ROBOT_NAME = "px100"
@@ -44,11 +44,12 @@ class PX100(object):
     self._GRIPPER_OPEN = 0.035
     self._GRIPPER_CLOSE = 0.022
     
-    self._arm, self._gripper = None
+    self._arm = None
+    self._gripper = None
 
     if self._SIM:
       moveit_commander.roscpp_initialize(sys.argv)
-      rospy.init_node(self.ROBOT_NAME, anonymous=True)
+      rospy.init_node(self._ROBOT_NAME, anonymous=True)
       self._arm = moveit_commander.MoveGroupCommander(robot_description=self._DESC_TOPIC, ns=self._ROBOT_NAME, name=self._ARM_NAME)
       self._gripper = moveit_commander.MoveGroupCommander(robot_description=self._DESC_TOPIC, ns=self._ROBOT_NAME, name=self._GRIPPER_NAME)
     else:
