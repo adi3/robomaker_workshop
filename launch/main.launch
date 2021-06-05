@@ -6,63 +6,98 @@
   <arg name="world_name" default="$(find robomaker_workshop)/worlds/px100-0.world"/>
 
 
-  <!-- This group gets executed only when sim is true -->
+  <!--####################################################################-->
+  <!--#########  This group gets executed only when sim is true  #########-->
+  <!--####################################################################-->
   <group if="$(arg sim)">
     
-    <!-- Publish statics and visuals of robot arm via .urdf.xacro -->
-    <!--<include file="$(find robomaker_workshop)/launch/px100.launch">-->
-    <!--  <arg name="robot_model" value="$(arg robot_model)"/>-->
-    <!--</include>-->
+    <!----------------------------  Begin STEP 1  ---------------------------->
+    <!--------------  Publish statics and visuals of robot arm  -------------->
+    <include file="$(find robomaker_workshop)/launch/robot.launch">
+      <arg name="robot_model" value="$(arg robot_model)"/>
+    </include>
+    <!-----------------------------  End STEP 1  ----------------------------->
     
-    <!-- Bring up simulation environment -->
-    <!--<include file="$(find robomaker_workshop)/launch/simulation.launch">-->
-    <!--  <arg name="world_name" value="$(arg world_name)"/>-->
-    <!--  <arg name="robot_model" value="$(arg robot_model)"/>-->
-    <!--</include>-->
+    
+    <!----------------------------  Begin STEP 2  ---------------------------->
+    <!-------------------  Bring up simulation environment  ------------------>
+    <include file="$(find robomaker_workshop)/launch/simulation.launch">
+      <arg name="robot_model" value="$(arg robot_model)"/>
+      <arg name="world_name" value="$(arg world_name)"/>
+    </include>
+    <!-----------------------------  End STEP 2  ----------------------------->
+    
     
     <!-- TODO: see if controllers are only needed during sim -->
-    <!-- Publish dynamics for the robot, tune PID controls here -->
-    <!--<rosparam file="$(find robomaker_workshop)/config/controllers.yaml" command="load" ns="$(arg robot_model)"/>-->
-    <!--<node pkg="controller_manager" name="controller_spawner" type="controller_manager" respawn="false" output="screen"-->
-    <!--  ns="$(arg robot_model)" args="spawn arm_controller gripper_controller joint_state_controller"/>-->
+    <!----------------------------  Begin STEP 3  ---------------------------->
+    <!--------------------  Set up controllers for robot  -------------------->
+    <rosparam file="$(find robomaker_workshop)/config/controllers.yaml" command="load" ns="$(arg robot_model)"/>
+    <node pkg="controller_manager" name="controller_spawner" type="controller_manager" respawn="false" output="screen"
+      ns="$(arg robot_model)" args="spawn arm_controller gripper_controller joint_state_controller"/>
+    <!-----------------------------  End STEP 3  ----------------------------->
+      
+      
+    <!----------------------------  Begin STEP 4  ---------------------------->
+    <!----------------  Open Rviz visualiztion for the system ---------------->
+    <node name="rviz" pkg="rviz" type="rviz" respawn="false" output="screen"
+      args="-f world -d $(find robomaker_workshop)/rviz/px100.rviz" ns="$(arg robot_model)">
+    </node>
+    <!-----------------------------  End STEP 4  ----------------------------->
+  
   
     <!-- TODO: see if moveit setup is only needed during sim -->
-    <!-- Launch moveit planning integration -->
-    <!--<include file="$(find interbotix_xsarm_moveit)/launch/move_group.launch" ns="$(arg robot_model)">-->
-    <!--  <arg name="robot_model"                       value="$(arg robot_model)"/>-->
-    <!--  <arg name="dof"                               value="$(arg dof)"/>-->
-    <!--  <arg name="fake_execution"                    value="false"/>-->
-    <!--</include>-->
+    <!----------------------------  Begin STEP 5  ---------------------------->
+    <!------------------ Launch moveit planning integration ------------------>
+    <include file="$(find interbotix_xsarm_moveit)/launch/move_group.launch" ns="$(arg robot_model)">
+      <arg name="robot_model"                       value="$(arg robot_model)"/>
+      <arg name="dof"                               value="$(arg dof)"/>
+    </include>
+    <!-----------------------------  End STEP 5  ----------------------------->
     
-    <!--Open Rviz visualiztion for the system -->
-    <!--<node name="rviz" pkg="rviz" type="rviz" respawn="false" output="screen"-->
-    <!--  args="-f world -d $(find robomaker_workshop)/rviz/px100.rviz" ns="$(arg robot_model)">-->
-    <!--</node>-->
     
-    <!-- Set robot to initial position -->
-    <!--<node pkg="robomaker_workshop" name="init" type="init.py" output="screen" />-->
+    <!----------------------------  Begin STEP 6  ---------------------------->
+    <!-------------------- Set robot to initial position --------------------->
+    <node pkg="robomaker_workshop" name="init" type="init.py" output="screen" />
+    <!-----------------------------  End STEP 6  ----------------------------->
+    
   </group>
   
   
-   <!-- This group gets executed only when sim is false -->
-  <group unless="$(arg sim)">
-    <!-- Extract local USB camera stream and publish to ROS -->
-    <!--<include file="$(find robomaker_workshop)/launch/camera.launch" ns="$(arg robot_model)" />-->
-  </group>
-	
-	
-	 <!--Everything here gets executed regardless of the state of sim -->
-	 
-  <!-- Start image view node for taking camera shots -->
-  <!--<node name="image_saver" pkg="image_view" type="image_saver" output="screen" ns="$(arg robot_model)">-->
-  <!--  <remap from="image" to="camera/image_raw" />-->
-  <!--  <param name="save_all_image" value="false" />-->
-  <!--  <param name="filename_format" value="$(find robomaker_workshop)/scripts/image_%04d.png" />-->
-  <!--</node>-->
   
-  <!-- Publish camera stream to Kinesis Video Streams -->
+  
+  <!--####################################################################-->
+  <!--############  This code gets executed regardless of sim  ###########-->
+  <!--####################################################################-->
+  
+  <!----------------------------  Begin STEP 7  ---------------------------->
+  <!--------------- Start utility for capturing camera shots --------------->
+  <node name="image_saver" pkg="image_view" type="image_saver" output="screen" ns="$(arg robot_model)">
+    <remap from="image" to="camera/image_raw" />
+    <param name="save_all_image" value="false" />
+    <param name="filename_format" value="$(find robomaker_workshop)/scripts/image_%04d.png" />
+  </node>
+  <!-----------------------------  End STEP 7  ----------------------------->
+  
+  
+  <!----------------------------  Begin STEP 8  ---------------------------->
+  <!-----------  Publish camera stream to Kinesis Video Streams  ----------->
   <!--<include file="$(find robomaker_workshop)/launch/kvstreamer.launch" ns="$(arg robot_model)" />-->
-
-
-
+  <!-----------------------------  End STEP 8  ----------------------------->
+  
+  
+  
+  
+  
+  <!--####################################################################-->
+  <!--#########  This group gets executed only when sim is false  ########-->
+  <!--####################################################################-->
+  <group unless="$(arg sim)">
+    
+    <!----------------------------  Begin STEP 9  ---------------------------->
+    <!------------------- Publish local USB camera stream -------------------->
+    <!--<include file="$(find robomaker_workshop)/launch/camera.launch" ns="$(arg robot_model)" />-->
+    <!-----------------------------  End STEP 9  ----------------------------->
+    
+  </group>
+	
 </launch>

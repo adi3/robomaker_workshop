@@ -10,10 +10,13 @@ import aws_utilities as util
 KVS_STREAM = "px100Stream"
 S3_BUCKET = "adsnghw-misc" #"custom-labels-console-eu-central-1-8a96d04acd"
 S3_PATH = "" #"datasets/PX100/"
-PROJECT_ARN = "arn:aws:rekognition:eu-central-1:517502204741:project/PX100/1621861684686"
-SIM_MODEL = "version/PX100.2021-05-24T15.08.29/1621861709475"
-REAL_MODEL = "version/PX100.2021-05-28T12.46.07/1622198767106"
-CONFIDENCE_THRESHOLD = 80
+ARN_BASE = "arn:aws:rekognition:eu-central-1:517502204741:project/PX100/"
+PROJECT_ID = "1621861684686"
+SIM_MODEL_NAME = "PX100.2021-05-24T15.08.29"
+REAL_MODEL_NAME = "PX100.2021-05-28T12.46.07"
+SIM_MODEL_ID = "1621861709475"
+REAL_MODEL_ID = "1622198767106"
+CONFIDENCE_THRESHOLD = 60
 
 
 def main():
@@ -32,12 +35,14 @@ def main():
       _kvs = True
 
   # Select model based on real or simulated option
-  model_arn = PROJECT_ARN + (SIM_MODEL if _sim else REAL_MODEL)
+  model_name = SIM_MODEL_NAME if _sim else REAL_MODEL_NAME
+  model_id = SIM_MODEL_ID if _sim else REAL_MODEL_ID
+  model_arn = ARN_BASE + 'version/' + model_name + '/' + model_id
   
   try:
     rospy.loginfo("Checking state of Rekognition model...")
     print("[  INFO  ] Checking state of Rekognition model...")
-    status = util.model_status(project_arn)
+    status = util.model_status(ARN_BASE + PROJECT_ID, model_name)
 
     print('[  INFO  ] Current model state: %s' % status)
     if status != 'RUNNING':
@@ -77,30 +82,16 @@ def main():
         return
       
       print('[  INFO  ] Snapped image from local camera stream: %s' % image)
-      
-    
-
-    print("Press Enter to upload extracted frame to S3")
-    raw_input()
-    
-    if not util.upload_image(image, S3_BUCKET, S3_PATH):
-      print('[  ERROR ] S3 upload failed')
-      return
-
-    os.remove(image)
-    print('[  INFO  ] Uploaded file to AWS: s3://%s' % (S3_BUCKET + "/" + S3_PATH + image))
-   
    
    
     print("Press Enter to discover labels with Rekognition")
     raw_input()
     
-    labels = util.find_coins(model_arn, S3_BUCKET, S3_PATH + image, CONFIDENCE_THRESHOLD)
+    labels = util.find_coins(image, model_arn, CONFIDENCE_THRESHOLD)
     print('[  INFO  ] Found %d labels in image' % len(labels))
     
-    # util.print_labels(labels)
-    # util.display_labels(S3_BUCKET, S3_PATH + image, labels)
-    util.delete_image(S3_BUCKET, S3_PATH + image)
+    util.print_labels(labels)
+    # util.display_labels(image, labels)
 
     coins = {}
     for l in labels:
@@ -117,7 +108,8 @@ def main():
     
     robot = PX100(simulated = _sim)
 
-    # TODO: Decide which coin to pick up first
+    # CHALLENGE 1: Play around with confidence treshold
+    # CHALLENGE 2: Decide which coin to pick up first
     for name, position in coins.items():
       robot.home()
       robot.open_gripper()

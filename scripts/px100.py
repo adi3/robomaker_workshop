@@ -36,7 +36,7 @@ class PX100(object):
     #TODO: can this just be named "arm" and "gripper"?
     self._ARM_NAME = "interbotix_arm"
     self._GRIPPER_NAME = "interbotix_gripper"
-    self._DESC_TOPIC = self._ROBOT_NAME + "/robot_description"
+    self._DESC_PARAM = self._ROBOT_NAME + "/robot_description"
     self._X_OFFSET = -0.15   # Offset of robot from center of table
     self._SLEEP_POSITIONS = [0.0, -1.88, 1.5, 0.8]   # [waist, shoulder, elbow, wrist_angle]
     self._DEPOSIT_POSITIONS = [3.14, 0.0, 0.8, -0.8]   # [waist, shoulder, elbow, wrist_angle]
@@ -50,10 +50,10 @@ class PX100(object):
     if self._SIM:
       moveit_commander.roscpp_initialize(sys.argv)
       rospy.init_node(self._ROBOT_NAME, anonymous=True)
-      self._arm = moveit_commander.MoveGroupCommander(robot_description=self._DESC_TOPIC, ns=self._ROBOT_NAME, name=self._ARM_NAME)
-      self._gripper = moveit_commander.MoveGroupCommander(robot_description=self._DESC_TOPIC, ns=self._ROBOT_NAME, name=self._GRIPPER_NAME)
+      self._arm = moveit_commander.MoveGroupCommander(robot_description=self._DESC_PARAM, ns=self._ROBOT_NAME, name=self._ARM_NAME)
+      self._gripper = moveit_commander.MoveGroupCommander(robot_description=self._DESC_PARAM, ns=self._ROBOT_NAME, name=self._GRIPPER_NAME)
     else:
-      robot = InterbotixManipulatorXS(self._ROBOT_NAME, "arm", "gripper")
+      robot = InterbotixManipulatorXS(self._ROBOT_NAME, group_name=self._ARM_NAME, gripper_name=self._GRIPPER_NAME)
       self._arm = robot.arm
       self._gripper = robot.gripper
 

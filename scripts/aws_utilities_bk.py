@@ -30,17 +30,51 @@ Y_RES_SCALING = 0.765
 DECIMALS = 2
 
 
-# Fetch Rekognition model status
-def model_status(project_arn, model_name):
-	rekognition = boto3.client('rekognition')
-	response = rekognition.describe_project_versions(
-				ProjectArn=project_arn,
-				VersionNames=[model_name])
-				
-	return response["ProjectVersionDescriptions"][0]["Status"]
-	
-	
-	
+# Retrieve latest ~1s clip from KVS
+def retrieve_clip(stream_name):
+	kvs = boto3.client("kinesisvideo")
+	endpoint = kvs.get_data_endpoint(
+		StreamName=stream_name,
+		APIName='GET_CLIP')['DataEndpoint']
+	video_name = str(uuid.uuid4()).split('-')[0] + ".mp4"
+
+	# For Linux
+	start = "$(date -d \"5 seconds ago\" -u \"+%FT%T+0000\")"
+	end = "$(date -u \"+%FT%T+0000\")"
+
+	# For macOS
+	# start = "$(date -v -5S -u \"+%FT%T+0000\")"
+	# end = "$(date -u \"+%FT%T+0000\")"
+
+	# Python API call fails but bash command works
+	command = "aws kinesis-video-archived-media get-clip --endpoint-url " + endpoint + \
+	" --stream-name px100Stream --clip-fragment-selector \"FragmentSelectorType=SERVER_TIMESTAMP,\
+	TimestampRange={StartTimestamp=" + start + ",EndTimestamp=" + end + "}\" " + video_name + " >/dev/null"
+
+	if os.system(command) == 0:
+		return video_name
+	else:
+		return None
+
+
+
+# Extract first frame of clip
+def extract_frame(video_name):
+	# Open video in openCV
+	video = cv2.VideoCapture(video_name)
+	# num_frames = video.get(cv2.CAP_PROP_FRAME_COUNT);
+	# video.set(cv2.CAP_PROP_POS_FRAMES, num_frames);
+	success,image = video.read()
+	image_name = video_name.split(".")[0] + ".png"
+
+	if success:
+		# Save clip as image file
+		cv2.imwrite(image_name, image)
+		return image_name
+	else:
+		return None
+
+
 # Take snapshot from local camera stream
 def snap_image():
 	rospy.wait_for_service(SNAP_SRV)
@@ -55,6 +89,38 @@ def snap_image():
 
 
 
+# Upload image to S3
+def upload_image(image_name, s3_bucket, s3_path):
+	s3 = boto3.client('s3')
+	try:
+		s3.upload_file(image_name, s3_bucket, s3_path + image_name)
+		return True
+	except:
+		return False
+
+
+# Delete image from S3
+def delete_image(s3_bucket, image_key):
+	s3 = boto3.client('s3')
+	try:
+		s3.delete_object(Bucket=s3_bucket, Key=image_key)
+		return True
+	except:
+		return False
+
+
+
+# Fetch Rekognition model status
+def model_status(project_arn, model_name):
+	rekognition = boto3.client('rekognition')
+	response = rekognition.describe_project_versions(
+				ProjectArn=project_arn,
+				VersionNames=[model_name])
+				
+	return response["ProjectVersionDescriptions"][0]["Status"]
+
+
+
 # Call Rekognition inference on image
 def find_coins(image_name, model_arn, min_confidence):
 	rekognition = boto3.client('rekognition')
@@ -63,8 +129,10 @@ def find_coins(image_name, model_arn, min_confidence):
 		base64_image=base64.b64encode(img.read()).decode('utf-8')
 		base_64_binary = base64.b64decode(base64_image)
         
-	response = rekognition.detect_custom_labels(Image={'Bytes': base_64_binary},
-        		ProjectVersionArn=model_arn, MinConfidence=min_confidence)
+	response = rekognition.detect_custom_labels(
+				Image={'Bytes': base_64_binary},
+        		ProjectVersionArn=model_arn,
+        		MinConfidence=min_confidence)
 	return response['CustomLabels']
 	
 
@@ -110,7 +178,6 @@ def display_labels(image_name, labels):
 		draw.line(points, fill=LABEL_COLOR, width=5)
 
 	image.show()
-
 
 
 # Obtain physical position of coin from Rekognition bbox
