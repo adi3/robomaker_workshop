@@ -43,7 +43,7 @@
   	</geometry>
 	<material>
 	  <script>
-	    <name>Gazebo/ZincYellow</name>
+	    <name>Gazebo/Bricks</name>
 	  </script>	
 	</material>
       </visual>

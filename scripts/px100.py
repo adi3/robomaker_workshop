@@ -36,7 +36,7 @@ class PX100(object):
     #TODO: can this just be named "arm" and "gripper"?
     self._ARM_NAME = "interbotix_arm"
     self._GRIPPER_NAME = "interbotix_gripper"
-    self._DESC_PARAM = self._ROBOT_NAME + "/robot_description"
+    self._DESC_PARAM = "/robot_description"
     self._X_OFFSET = -0.15   # Offset of robot from center of table
     self._SLEEP_POSITIONS = [0.0, -1.88, 1.5, 0.8]   # [waist, shoulder, elbow, wrist_angle]
     self._DEPOSIT_POSITIONS = [3.14, 0.0, 0.8, -0.8]   # [waist, shoulder, elbow, wrist_angle]
@@ -49,9 +49,9 @@ class PX100(object):
 
     if self._SIM:
       moveit_commander.roscpp_initialize(sys.argv)
-      rospy.init_node(self._ROBOT_NAME, anonymous=True)
-      self._arm = moveit_commander.MoveGroupCommander(robot_description=self._DESC_PARAM, ns=self._ROBOT_NAME, name=self._ARM_NAME)
-      self._gripper = moveit_commander.MoveGroupCommander(robot_description=self._DESC_PARAM, ns=self._ROBOT_NAME, name=self._GRIPPER_NAME)
+      # rospy.init_node(self._ROBOT_NAME, anonymous=True)
+      self._arm = moveit_commander.MoveGroupCommander(robot_description=self._DESC_PARAM, name=self._ARM_NAME)
+      self._gripper = moveit_commander.MoveGroupCommander(robot_description=self._DESC_PARAM, name=self._GRIPPER_NAME)
     else:
       robot = InterbotixManipulatorXS(self._ROBOT_NAME, group_name=self._ARM_NAME, gripper_name=self._GRIPPER_NAME)
       self._arm = robot.arm
@@ -148,8 +148,8 @@ class PX100(object):
     else:
       x_dash = y
 
-    # NOTE: Interbotix arms do not work out of the box with MoveIt.
-    # Hence, need to do IK yourself for the simulated scenario.
+    # NB: Interbotix arms do not work out-of-the-box with MoveIt.
+    # Hence, we need to do IK yourself for the simulated scenario.
     # Moving the physical arm is much simpler.
     if self._SIM:
       # Only interested in finding XZ plan from Moveit

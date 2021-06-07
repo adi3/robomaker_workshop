@@ -3,7 +3,7 @@
 import numpy as np
 
 NUM_WORLDS = 10
-COINS = ["monero", "dash", "litecoin", "etherium", "bitcoin", "zcash"]
+COINS = ["monero", "dash", "litecoin", "etherium", "bitcoin"]
 X_LOW = 0.06
 X_HIGH = 0.15
 # Y_LOW = -0.25
@@ -31,9 +31,9 @@ for i in range(NUM_WORLDS):
         # Keeps coins within reachable range
         # y_clip = Y_MAX*(x - X_LOW)/(X_HIGH - X_LOW)
         y_clip = np.sqrt(np.square(X_HIGH) - np.square(x))
-        print(x)
-        print(y_clip)
-        print("---")
+        # print(x)
+        # print(y_clip)
+        # print("---")
         # y = np.random.uniform(Y_LOW + y_clip, Y_HIGH - y_clip)
         y = np.random.uniform(-y_clip, y_clip)
 
@@ -49,9 +49,9 @@ for i in range(NUM_WORLDS):
 
         output += temp
 
-    # print("================")
-    # print(output)
-    # print("================")
+    print("================")
+    print(output)
+    print("================")
 
     template = open("../worlds/template.world", "rt")
     world = open("../worlds/px100-%d.world" % i, "wt")

@@ -14,8 +14,8 @@ from PIL import Image, ImageDraw, ImageFont
 
 boto3.compat.filter_python_deprecation_warnings()
 
-LABEL_COLOR = '#FF9900'
-SNAP_SRV = '/px100/image_saver/save'
+LABEL_COLOR = '#cc0000'
+SNAP_SRV = '/image_saver/save'
 
 # For Linux
 FONT_TYPE = '/usr/share/fonts/truetype/ubuntu/Ubuntu-B.ttf'
@@ -31,8 +31,11 @@ DECIMALS = 2
 
 
 # Fetch Rekognition model status
-def model_status(project_arn, model_name):
+def model_status(project_arn, model_name, access_profile):
 	rekognition = boto3.client('rekognition')
+	if access_profile:
+		rekognition = boto3.Session(profile_name=access_profile).client('rekognition')
+		
 	response = rekognition.describe_project_versions(
 				ProjectArn=project_arn,
 				VersionNames=[model_name])
@@ -50,14 +53,16 @@ def snap_image():
 		[os.remove(ini) for ini in glob.glob("*.ini")]
 		return sorted(glob.glob("*.png"))[-1]
 	except rospy.ServiceException as e:
-		print("Service call failed: %s"%e)
+		rospy.logerr("Service call failed: %s"%e)
 		return None
 
 
 
 # Call Rekognition inference on image
-def find_coins(image_name, model_arn, min_confidence):
+def find_coins(image_name, model_arn, min_confidence, access_profile):
 	rekognition = boto3.client('rekognition')
+	if access_profile:
+		rekognition = boto3.Session(profile_name=access_profile).client('rekognition')
 	
 	with open(image_name, "rb") as img:
 		base64_image=base64.b64encode(img.read()).decode('utf-8')
@@ -72,14 +77,15 @@ def find_coins(image_name, model_arn, min_confidence):
 # Print labels in human-readable form to console
 def print_labels(labels):
 	for l in labels:
-		print('Label: ' + str(l['Name']))
-		print('\tConfidence: ' + str(l['Confidence']))
+		rospy.loginfo('Label: ' + str(l['Name']))
+		rospy.loginfo('\tConfidence: ' + str(l['Confidence']))
 		
 		bbox = l['Geometry']['BoundingBox']
-		print('\tLeft: '   + str(bbox['Left']))
-		print('\tTop: '	   + str(bbox['Top']))
-		print('\tWidth: '  + str(bbox['Width']))
-		print('\tHeight: ' + str(bbox['Height']))
+		rospy.loginfo('\tLeft: '   + str(bbox['Left']))
+		rospy.loginfo('\tTop: '	   + str(bbox['Top']))
+		rospy.loginfo('\tWidth: '  + str(bbox['Width']))
+		rospy.loginfo('\tHeight: ' + str(bbox['Height']))
+		print('')
 
 
 
@@ -126,3 +132,14 @@ def get_coin_position(bbox):
 	x = 2 * X_RES_SCALING * (0.5 - (bbox['Top'] + 0.5*bbox['Height']))
 	y = 2 * Y_RES_SCALING* (0.5 - (bbox['Left'] + 0.5*bbox['Width']))
 	return np.around(x, decimals=DECIMALS), np.around(y, decimals=DECIMALS)
+	
+	
+	
+# Upload image to S3
+def upload_image(image_name, s3_bucket, s3_path):
+	s3 = boto3.client('s3')
+	try:
+		s3.upload_file(image_name, s3_bucket, s3_path + image_name)
+		return True
+	except:
+		return False

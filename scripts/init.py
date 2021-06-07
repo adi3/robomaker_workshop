@@ -5,8 +5,10 @@ from px100 import PX100
 
 
 def main():
+  rospy.init_node("init", anonymous=True)
+  robot = PX100()
+    
   try:
-    robot = PX100()
     if robot.sleep():
       rospy.loginfo("Initialized robot to sleep position")
     else:

@@ -1,6 +1,6 @@
 h264_video_encoder:
   # Topic on which camera is publishing sensor_msgs/Image message
-  subscription_topic: "/px100/usb_cam/image_raw"
+  subscription_topic: "/usb_cam/image_raw"
   
   # Topic for publishing the encoded video stream (kinesis_video_msgs/KinesisVideoFrame)
   publication_topic: "/video/encoded"
