@@ -2,6 +2,7 @@
 
 import os
 import sys
+import glob
 import rospy
 from px100 import PX100
 import utilities as util
@@ -12,7 +13,7 @@ SIM_MODEL_NAME = "PX100.2021-06-07T01.15.17"
 REAL_MODEL_NAME = "PX100.2021-05-28T12.46.07"
 SIM_MODEL_ID = "1623021317812"
 REAL_MODEL_ID = "1622198767106"
-CONFIDENCE_THRESHOLD = 90
+CONFIDENCE_THRESHOLD = 85
 
 MODEL_ACCESS_PROFILE = ""#"rekognition_access"
 
@@ -30,6 +31,8 @@ def main():
   model_id = SIM_MODEL_ID if _sim else REAL_MODEL_ID
   model_arn = ARN_BASE + 'version/' + model_name + '/' + model_id
   
+  [os.remove(img) for img in glob.glob("*.png")]
+  
   try:
     rospy.init_node("main", anonymous=True)
     
@@ -37,14 +40,11 @@ def main():
     #------------------------------------ Begin STEP 1 ------------------------------------#
     ########################################################################################
     rospy.loginfo("Checking state of Rekognition model...")
-    # print("[  INFO  ] Checking state of Rekognition model...")
     status = util.model_status(ARN_BASE + PROJECT_ID, model_name, MODEL_ACCESS_PROFILE)
 
     rospy.loginfo('Current model state: %s' % status)
-    # print('[  INFO  ] Current model state: %s' % status)
     if status != 'RUNNING':
       rospy.logerr('Rekognition model needs to be in RUNNING state')
-      # print('[  ERROR ] Rekognition model needs to be in RUNNING state')
       return
     ########################################################################################
     #------------------------------------- End STEP 1 -------------------------------------#
@@ -55,16 +55,14 @@ def main():
     #------------------------------------ Begin STEP 2 ------------------------------------#
     ########################################################################################
     rospy.logwarn('Press Enter to snap image from ROS topic')
-    raw_input()
+    # raw_input()
     
     image = util.snap_image()
     if image == None:
       rospy.logerr('Trouble snapping image from ROS topic')
-      # print('[  ERROR ] Trouble snapping image from ROS topic')
       return
     
     rospy.loginfo('Snapped image from local camera stream: %s' % image)
-    # print('[  INFO  ] Snapped image from local camera stream: %s' % image)
     ########################################################################################
     #------------------------------------- End STEP 2 -------------------------------------#
     ########################################################################################
@@ -74,11 +72,10 @@ def main():
     #------------------------------------ Begin STEP 3 ------------------------------------#
     ########################################################################################
     rospy.logwarn('Press Enter to discover labels with Rekognition')
-    raw_input()
+    # raw_input()
     
     labels = util.find_coins(image, model_arn, CONFIDENCE_THRESHOLD, MODEL_ACCESS_PROFILE)
     rospy.loginfo('Found %d labels in image' % len(labels))
-    # print('[  INFO  ] Found %d labels in image' % len(labels))
     
     util.print_labels(labels)
     # util.display_labels(image, labels)
@@ -90,33 +87,29 @@ def main():
     ########################################################################################
     #------------------------------------ Begin STEP 4 ------------------------------------#
     ########################################################################################
-    print("Press Enter to transform coin positions into physical coordinates")
-    raw_input()
+    rospy.logwarn("Press Enter to transform coin positions into physical coordinates")
+    # raw_input()
     
-    rospy.loginfo('Transforming pixels to physical coordinates...' % len(labels))
+    rospy.loginfo('Transforming pixels to physical coordinates...')
     coins = {}
     
     for l in labels:
       name = l['Name']
       x, y = util.get_coin_position(l['Geometry']['BoundingBox'])
       rospy.loginfo(name)
-      rospy.loginfo('\tX: ' + str(x))
-      rospy.loginfo('\tY: ' + str(y))
-      # print(name)
-      # print('\tX: ' + str(x))
-      # print('\tY: ' + str(y))
+      rospy.loginfo('\tX: ' + str(x) + ' m')
+      rospy.loginfo('\tY: ' + str(y) + ' m')
       coins[name] = [x, y]
     ########################################################################################
     #------------------------------------- End STEP 4 -------------------------------------#
     ########################################################################################
-    
-    return
+  
      
     ########################################################################################
     #------------------------------------ Begin STEP 5 ------------------------------------#
     ########################################################################################
-    print("Press Enter to instruct robot to pick a coin")
-    raw_input()
+    rospy.logwarn("Press Enter to instruct robot to pick a coin")
+    # raw_input()
     
     robot = PX100(simulated = _sim)
 
@@ -129,7 +122,7 @@ def main():
       x = position[0]
       y = position[1]
       
-      print("[  INFO  ] Picking up %s..." % name)
+      rospy.loginfo("Picking up %s..." % name)
       success = robot.go_to([x, y, 0.01])
       
       if success:
@@ -137,10 +130,10 @@ def main():
         robot.home()
         robot.deposit()
         
-      print("Press Enter to pick up another coin")
-      raw_input()
+      # print("Press Enter to pick up another coin")
+      # raw_input()
 
-    print("[  INFO  ] No more coins. Going to sleep...")
+    rospy.loginfo("No more coins. Going to sleep...")
     robot.sleep()
     ########################################################################################
     #------------------------------------- End STEP 5 -------------------------------------#

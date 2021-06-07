@@ -33,13 +33,12 @@ class PX100(object):
     self._SIM = simulated
     self._ROBOT_NAME = "px100"
 
-    #TODO: can this just be named "arm" and "gripper"?
     self._ARM_NAME = "interbotix_arm"
     self._GRIPPER_NAME = "interbotix_gripper"
     self._DESC_PARAM = "/robot_description"
     self._X_OFFSET = -0.15   # Offset of robot from center of table
     self._SLEEP_POSITIONS = [0.0, -1.88, 1.5, 0.8]   # [waist, shoulder, elbow, wrist_angle]
-    self._DEPOSIT_POSITIONS = [3.14, 0.0, 0.8, -0.8]   # [waist, shoulder, elbow, wrist_angle]
+    self._DEPOSIT_POSITIONS = [2.5, 0.0, 0.8, -0.8]   # [waist, shoulder, elbow, wrist_angle]
 
     self._GRIPPER_OPEN = 0.035
     self._GRIPPER_CLOSE = 0.022
@@ -157,7 +156,7 @@ class PX100(object):
       pose_goal = geometry_msgs.msg.Pose()
       pose_goal.position.x = x_dash
       pose_goal.position.z = z # height for picking up coin
-      print(pose_goal)
+      # print(pose_goal)
       self._arm.set_pose_target(pose_goal)
 
       # Determine final joint states for XZ from trajectory
@@ -177,7 +176,7 @@ class PX100(object):
 
       # Confirm current position is within tolerable range of desired goal
       current = self._arm.get_current_pose().pose.position
-      print(current)
+      # print(current)
       return check([x, y], [current.x, current.y], 0.01)
     else:
      theta_list, result = self._arm.set_ee_pose_components(x=x_dash, z=z)
