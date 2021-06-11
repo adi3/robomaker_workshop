@@ -15,7 +15,7 @@ SIM_MODEL_ID = "1623021317812"
 REAL_MODEL_ID = "1622198767106"
 CONFIDENCE_THRESHOLD = 85
 
-MODEL_ACCESS_PROFILE = ""#"rekognition_access"
+MODEL_ACCESS_PROFILE = ""#"robomaker_workshop"
 
 
 def main():

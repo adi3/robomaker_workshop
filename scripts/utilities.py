@@ -130,7 +130,7 @@ def get_coin_position(bbox):
     """
 	
 	x = 2 * X_RES_SCALING * (0.5 - (bbox['Top'] + 0.5*bbox['Height']))
-	y = 2 * Y_RES_SCALING* (0.5 - (bbox['Left'] + 0.5*bbox['Width']))
+	y = 2 * Y_RES_SCALING * (0.5 - (bbox['Left'] + 0.5*bbox['Width']))
 	return np.around(x, decimals=DECIMALS), np.around(y, decimals=DECIMALS)
 	
 	
