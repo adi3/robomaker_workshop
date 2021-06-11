@@ -7,6 +7,7 @@ import rospy
 from px100 import PX100
 import utilities as util
 
+ACCESS_PROFILE = "robomaker_workshop"
 ARN_BASE = "arn:aws:rekognition:eu-central-1:517502204741:project/PX100/"
 PROJECT_ID = "1621861684686"
 SIM_MODEL_NAME = "PX100.2021-06-07T01.15.17"
@@ -14,8 +15,6 @@ REAL_MODEL_NAME = "PX100.2021-05-28T12.46.07"
 SIM_MODEL_ID = "1623021317812"
 REAL_MODEL_ID = "1622198767106"
 CONFIDENCE_THRESHOLD = 85
-
-MODEL_ACCESS_PROFILE = ""#"robomaker_workshop"
 
 
 def main():
@@ -26,6 +25,15 @@ def main():
     if sys.argv[1] == "--sim":
       _sim = True
       
+  # If accessing Rekognition model from an internal account,
+  # then no separate role-based profile is needed
+  _internal = False
+  if len(sys.argv) > 2:
+    if sys.argv[2] == "--internal":
+      _internal = True
+      
+  access_profile = "" if _internal else ACCESS_PROFILE
+
   # Select model based on real or simulated option
   model_name = SIM_MODEL_NAME if _sim else REAL_MODEL_NAME
   model_id = SIM_MODEL_ID if _sim else REAL_MODEL_ID
@@ -40,7 +48,7 @@ def main():
     #------------------------------------ Begin STEP 1 ------------------------------------#
     ########################################################################################
     rospy.loginfo("Checking state of Rekognition model...")
-    status = util.model_status(ARN_BASE + PROJECT_ID, model_name, MODEL_ACCESS_PROFILE)
+    status = util.model_status(ARN_BASE + PROJECT_ID, model_name, access_profile)
 
     rospy.loginfo('Current model state: %s' % status)
     if status != 'RUNNING':
@@ -50,7 +58,7 @@ def main():
     #------------------------------------- End STEP 1 -------------------------------------#
     ########################################################################################
 
-
+    return
     ########################################################################################
     #------------------------------------ Begin STEP 2 ------------------------------------#
     ########################################################################################
@@ -74,7 +82,7 @@ def main():
     rospy.logwarn('Press Enter to discover labels with Rekognition')
     # raw_input()
     
-    labels = util.find_coins(image, model_arn, CONFIDENCE_THRESHOLD, MODEL_ACCESS_PROFILE)
+    labels = util.find_coins(image, model_arn, CONFIDENCE_THRESHOLD, access_profile)
     rospy.loginfo('Found %d labels in image' % len(labels))
     
     util.print_labels(labels)
