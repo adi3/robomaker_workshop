@@ -27,6 +27,6 @@ pip install boto3
 
 cd ~/environment/aws_ws
 catkin build
-source devel/setup.bash
+source ~/environment/aws_ws/devel/setup.bash
 
 export DISPLAY=:0
