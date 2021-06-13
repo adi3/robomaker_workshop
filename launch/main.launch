@@ -46,7 +46,7 @@
       
       
     <!--++++++++++++++++++++++++++  Begin STEP 4  ++++++++++++++++++++++++++-->
-    <!--++++++++++++++  Open Rviz visualiztion for the system ++++++++++++++-->
+    <!--++++++++++++++  Open Rviz visualization for the system ++++++++++++++-->
     <node name="rviz" pkg="rviz" type="rviz" respawn="false" output="screen"
       args="-f world -d $(find robomaker_workshop)/rviz/px100.rviz">
     </node>
