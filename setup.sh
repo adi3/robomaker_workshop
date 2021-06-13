@@ -30,3 +30,8 @@ catkin build
 source ~/environment/aws_ws/devel/setup.bash
 
 export DISPLAY=:0
+
+aws s3 cp s3://adsnghw-robotics/px100-dataset/real_coins.zip /tmp/px100-dataset.zip --profile robomaker_workshop
+unzip /tmp/px100-dataset.zip -d /tmp/px100-dataset
+BUCKET=px100-dataset-$(cut -d'-' -f1 <<< $(uuidgen))
+aws s3 cp /tmp/px100-dataset s3://$BUCKET/assets/px100-dataset --recursive
