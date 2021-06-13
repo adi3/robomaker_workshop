@@ -22,7 +22,7 @@ rm xsarm_amd64_install.sh
 source ~/.bashrc
 echo "~/environment/aws_ws/src/robomaker_workshop/devel/setup.bash" >> ~/.bashrc
 
-sudo apt install python-catkin-tools -y
+sudo apt install python-catkin-tools imagemagick -y
 pip install boto3
 
 cd ~/environment/aws_ws
