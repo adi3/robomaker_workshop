@@ -15,28 +15,26 @@
   <!--#########  This group gets executed only when sim is true  #########-->
   <!--####################################################################-->
   <group if="$(arg sim)">
-    
+        
     <!--++++++++++++++++++++++++++  Begin STEP 1  ++++++++++++++++++++++++++-->
-    <!--++++++++++++  Publish statics and visuals of robot arm  ++++++++++++-->
-    
-    <param name="robot_description" command="xacro $(find robomaker_workshop)/urdf/$(arg robot_model).urdf.xacro" />
-    
-    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
-    
-    <!--+++++++++++++++++++++++++++  End STEP 1  +++++++++++++++++++++++++++-->
-
-    
-    <!--++++++++++++++++++++++++++  Begin STEP 2  ++++++++++++++++++++++++++-->
-    <!--+++++++++++++++++  Bring up simulation environment  ++++++++++++++++-->
+    <!--+++++++++++++++++  Initiate simulation environment  ++++++++++++++++-->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
       <arg name="world_name" value="$(arg world_name)"/>
     </include>
+    <!--+++++++++++++++++++++++++++  End STEP 1  +++++++++++++++++++++++++++-->
     
+	  
+    <!--++++++++++++++++++++++++++  Begin STEP 2  ++++++++++++++++++++++++++-->
+    <!--++++++++++++  Publish statics and visuals of robot arm  ++++++++++++-->
+    
+    <param name="robot_description" command="xacro $(find robomaker_workshop)/urdf/$(arg robot_model).urdf.xacro" />
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+	  
     <node pkg="gazebo_ros" name="robot_spawner" type="spawn_model" respawn="false" output="screen"
-    args="-urdf -model $(arg robot_model) -param robot_description -x $(arg x_offset) -z $(arg table_height)"/>
+      args="-urdf -model $(arg robot_model) -param robot_description -x $(arg x_offset) -z $(arg table_height)"/>
     <!--+++++++++++++++++++++++++++  End STEP 2  +++++++++++++++++++++++++++-->
     
-    
+	  
     <!-- TODO: see if controllers are only needed during sim -->
     <!--++++++++++++++++++++++++++  Begin STEP 3  ++++++++++++++++++++++++++-->
     <!--++++++++++++++++++  Set up controllers for robot  ++++++++++++++++++-->
