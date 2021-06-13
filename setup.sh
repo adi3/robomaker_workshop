@@ -1,3 +1,6 @@
+sudo apt update
+sudo DEBIAN_FRONTEND=noninteractive apt upgrade -yq
+
 aws configure set profile.robomaker_workshop.role_arn arn:aws:iam::517502204741:role/ResourcesForRoboticsWorkshop
 aws configure set profile.robomaker_workshop.source_profile default
 aws configure set profile.robomaker_workshop.region eu-central-1
@@ -7,6 +10,7 @@ cd ~/environment/aws_ws/src/
 git clone https://github.com/adi3/robomaker_workshop
 
 cd ~/environment/aws_ws
+rosdep update
 rosdep install --from-paths src --ignore-src --rosdistro melodic -r -y
 
 cd ~/environment
@@ -17,7 +21,6 @@ echo "N" | ./xsarm_amd64_install.sh
 source ~/.bashrc
 echo "~/environment/aws_ws/src/robomaker_workshop/devel/setup.bash" >> ~/.bashrc
 
-sudo apt update
 sudo apt install python-catkin-tools -y
 pip install boto3
 
@@ -25,4 +28,4 @@ cd ~/environment/aws_ws
 catkin build
 source devel/setup.bash
 
-DISPLAY:=0
+export DISPLAY=:0
