@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 sudo apt update
 sudo DEBIAN_FRONTEND=noninteractive apt upgrade -yq
 
