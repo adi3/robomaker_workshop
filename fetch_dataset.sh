@@ -8,5 +8,6 @@ unzip -q /tmp/px100-dataset.zip -d /tmp/px100-dataset
 BUCKET=$(aws s3 ls | awk '{print $3}' | grep "custom-labels-console")
 aws s3 cp /tmp/px100-dataset s3://$BUCKET/assets/px100-dataset --recursive
 
+rm -rf /tmp/px100-dataset*
 NUM=$(aws s3 ls s3://$BUCKET/assets/px100-dataset/ | wc -l)
 echo "SUCCESS: Uploaded $NUM images to $BUCKET on S3"
