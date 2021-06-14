@@ -3,7 +3,7 @@
 set -ef -o pipefail
 
 aws s3 cp s3://adsnghw-robotics/px100-dataset/real_coins.zip /tmp/px100-dataset.zip --profile robomaker_workshop
-unzip -q /tmp/px100-dataset.zip -d /tmp/px100-dataset
+unzip /tmp/px100-dataset.zip -d /tmp/px100-dataset
 
 BUCKET=$(aws s3 ls | awk '{print $3}' | grep "custom-labels-console")
 aws s3 cp /tmp/px100-dataset s3://$BUCKET/assets/px100-dataset --recursive
