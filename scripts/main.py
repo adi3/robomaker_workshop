@@ -15,6 +15,7 @@ REAL_MODEL_NAME = "PX100.2021-05-28T12.46.07"
 SIM_MODEL_ID = "1623021317812"
 REAL_MODEL_ID = "1622198767106"
 CONFIDENCE_THRESHOLD = 85
+IMAGE_NAME = "image_cap.png"
 
 
 def main():
@@ -58,7 +59,7 @@ def main():
     #------------------------------------- End STEP 1 -------------------------------------#
     ########################################################################################
 
-    return
+    
     ########################################################################################
     #------------------------------------ Begin STEP 2 ------------------------------------#
     ########################################################################################
@@ -66,7 +67,7 @@ def main():
     # raw_input()
     
     image = util.snap_image()
-    if image == None:
+    if image == None or image != IMAGE_NAME:
       rospy.logerr('Trouble snapping image from ROS topic')
       return
     
@@ -82,7 +83,7 @@ def main():
     rospy.logwarn('Press Enter to discover labels with Rekognition')
     # raw_input()
     
-    labels = util.find_coins(image, model_arn, CONFIDENCE_THRESHOLD, access_profile)
+    labels = util.find_coins(IMAGE_NAME, model_arn, CONFIDENCE_THRESHOLD, access_profile)
     rospy.loginfo('Found %d labels in image' % len(labels))
     
     util.print_labels(labels)
