@@ -30,17 +30,29 @@ Y_RES_SCALING = 0.765
 DECIMALS = 2
 
 
+# Fetch Rekognition project ARN from name
+def get_arn(project_name):
+	rekognition = boto3.client('rekognition')
+	response = rekognition.describe_projects()
+	
+	for p in response['ProjectDescriptions']:
+		if p['ProjectArn'].split('/')[1] == project_name:
+			return p['ProjectArn']
+	return None
+		
+	
 # Fetch Rekognition model status
-def model_status(project_arn, model_name, access_profile):
+def model_status(project_name, model_name, access_profile):
 	rekognition = boto3.client('rekognition')
 	if access_profile:
 		rekognition = boto3.Session(profile_name=access_profile).client('rekognition')
 		
+	project_arn = get_arn(project_name)
 	response = rekognition.describe_project_versions(
 				ProjectArn=project_arn,
 				VersionNames=[model_name])
 				
-	return response["ProjectVersionDescriptions"][0]["Status"]
+	return response['ProjectVersionDescriptions'][0]['Status']
 	
 	
 	
