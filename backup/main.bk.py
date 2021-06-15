@@ -2,113 +2,139 @@
 
 import os
 import sys
+import glob
 import rospy
 from px100 import PX100
-import aws_utilities as util
+import utilities as util
 
+ACCESS_PROFILE    = "robomaker_workshop"
+SIM_PROJECT_ARN   = "arn:aws:rekognition:eu-central-1:517502204741:project/PX100/1621861684686"
+SIM_MODEL_ARN     = "arn:aws:rekognition:eu-central-1:517502204741:project/PX100/version/PX100.2021-06-07T01.15.17/1623021317812"
+SIM_MODEL_NAME    = "PX100.2021-06-07T01.15.17"
+REAL_PROJECT_ARN  = ""
+REAL_MODEL_ARN    = ""
+REAL_MODEL_NAME   = ""
 
-KVS_STREAM = "px100Stream"
-S3_BUCKET = "adsnghw-misc" #"custom-labels-console-eu-central-1-8a96d04acd"
-S3_PATH = "" #"datasets/PX100/"
 ARN_BASE = "arn:aws:rekognition:eu-central-1:517502204741:project/PX100/"
 PROJECT_ID = "1621861684686"
-SIM_MODEL_NAME = "PX100.2021-05-24T15.08.29"
+SIM_MODEL_NAME = "PX100.2021-06-07T01.15.17"
 REAL_MODEL_NAME = "PX100.2021-05-28T12.46.07"
-SIM_MODEL_ID = "1621861709475"
+SIM_MODEL_ID = "1623021317812"
 REAL_MODEL_ID = "1622198767106"
-CONFIDENCE_THRESHOLD = 60
+
+CONFIDENCE_THRESHOLD = 85
+IMAGE_NAME = "image_cap.png"
 
 
 def main():
   # Sim option will use move_it to drive arm in Gazebo
-  # Otherwise script will execute motion on physical arm
+  # Otherwise script will attempt to move physical arm
   _sim = False
   if len(sys.argv) > 1:
     if sys.argv[1] == "--sim":
       _sim = True
-
-  # Remote option will source image from KVS clip
-  # Otherwise script will snap image from local topic
-  _kvs = False
+      
+  # If accessing Rekognition model from an internal account,
+  # then no separate role-based profile is needed
+  _internal = False
   if len(sys.argv) > 2:
-    if sys.argv[2] == "--kvs":
-      _kvs = True
+    if sys.argv[2] == "--internal":
+      _internal = True
+      
+  access_profile = "" if _internal else ACCESS_PROFILE
 
   # Select model based on real or simulated option
-  model_name = SIM_MODEL_NAME if _sim else REAL_MODEL_NAME
-  model_id = SIM_MODEL_ID if _sim else REAL_MODEL_ID
-  model_arn = ARN_BASE + 'version/' + model_name + '/' + model_id
+  #model_name = SIM_MODEL_NAME if _sim else REAL_MODEL_NAME
+  #model_id = SIM_MODEL_ID if _sim else REAL_MODEL_ID
+  #model_arn = ARN_BASE + 'version/' + model_name + '/' + model_id
+  
+  project_arn = SIM_PROJECT_ARN if _sim else REAL_PROJECT_ARN
+  model_arn   = SIM_MODEL_ARN if _sim else REAL_MODEL_ARN
+  model_name  = SIM_MODEL_NAME if _sim else REAL_MODEL_NAME
+  
+  [os.remove(img) for img in glob.glob("*.png")]
   
   try:
+    rospy.init_node("main", anonymous=True)
+    
+    ########################################################################################
+    #------------------------------------ Begin STEP 1 ------------------------------------#
+    ########################################################################################
     rospy.loginfo("Checking state of Rekognition model...")
-    print("[  INFO  ] Checking state of Rekognition model...")
-    status = util.model_status(ARN_BASE + PROJECT_ID, model_name)
+    status = util.model_status(project_arn, model_name, access_profile)
 
-    print('[  INFO  ] Current model state: %s' % status)
+    rospy.loginfo('Current model state: %s' % status)
     if status != 'RUNNING':
-      print('[  ERROR ] Rekognition model needs to be in RUNNING state')
+      rospy.logerr('Rekognition model needs to be in RUNNING state')
       return
+    ########################################################################################
+    #------------------------------------- End STEP 1 -------------------------------------#
+    ########################################################################################
 
-    if _kvs:
-      print("Press Enter to poll KVS livestream")
-      raw_input()
-
-      print('[  INFO  ] Polling KVS for livestream data...')
-      video = util.retrieve_clip(KVS_STREAM)
-      if video == None:
-        print('[  ERROR ] Make sure ROS application is live and broadcasting to the correct KVS stream')
-        return
-  
-      print('[  INFO  ] Retrieved clip from KVS: %s' % video)
-
-      print("Press Enter to extract frame from KVS clip")
-      raw_input()
-      
-      image = util.extract_frame(video)
-      if image == None:
-        print('[  ERROR ] Trouble extracting frame from clip')
-        return
-      
-      os.remove(video)
-      print('[  INFO  ] Extracted frame from clip: %s' % image)
     
-    else:
-      print("Press Enter to snap image from ROS topic")
-      raw_input()
-      
-      image = util.snap_image()
-      if image == None:
-        print('[  ERROR ] Trouble snapping image from ROS topic')
-        return
-      
-      print('[  INFO  ] Snapped image from local camera stream: %s' % image)
+    ########################################################################################
+    #------------------------------------ Begin STEP 2 ------------------------------------#
+    ########################################################################################
+    rospy.logwarn('Press Enter to snap image from ROS topic')
+    # raw_input()
+    
+    image = util.snap_image()
+    if image == None or image != IMAGE_NAME:
+      rospy.logerr('Trouble snapping image from ROS topic')
+      return
+    
+    rospy.loginfo('Snapped image from local camera stream: %s' % image)
+    ########################################################################################
+    #------------------------------------- End STEP 2 -------------------------------------#
+    ########################################################################################
    
    
-    print("Press Enter to discover labels with Rekognition")
-    raw_input()
+    ########################################################################################
+    #------------------------------------ Begin STEP 3 ------------------------------------#
+    ########################################################################################
+    rospy.logwarn('Press Enter to discover labels with Rekognition')
+    # raw_input()
     
-    labels = util.find_coins(image, model_arn, CONFIDENCE_THRESHOLD)
-    print('[  INFO  ] Found %d labels in image' % len(labels))
+    labels = util.find_coins(IMAGE_NAME, model, CONFIDENCE_THRESHOLD, access_profile)
+    rospy.loginfo('Found %d labels in image' % len(labels))
     
     util.print_labels(labels)
     # util.display_labels(image, labels)
+    ########################################################################################
+    #------------------------------------- End STEP 3 -------------------------------------#
+    ########################################################################################
 
+
+    ########################################################################################
+    #------------------------------------ Begin STEP 4 ------------------------------------#
+    ########################################################################################
+    rospy.logwarn("Press Enter to transform coin positions into physical coordinates")
+    # raw_input()
+    
+    rospy.loginfo('Transforming pixels to physical coordinates...')
     coins = {}
+    
     for l in labels:
       name = l['Name']
       x, y = util.get_coin_position(l['Geometry']['BoundingBox'])
-      print(name)
-      print('\tX: ' + str(x))
-      print('\tY: ' + str(y))
+      rospy.loginfo(name)
+      rospy.loginfo('\tX: ' + str(x) + ' m')
+      rospy.loginfo('\tY: ' + str(y) + ' m')
       coins[name] = [x, y]
+    ########################################################################################
+    #------------------------------------- End STEP 4 -------------------------------------#
+    ########################################################################################
   
-    
-    print("Press Enter to instruct robot to pick a coin")
-    raw_input()
+     
+    ########################################################################################
+    #------------------------------------ Begin STEP 5 ------------------------------------#
+    ########################################################################################
+    rospy.logwarn("Press Enter to instruct robot to pick a coin")
+    # raw_input()
     
     robot = PX100(simulated = _sim)
 
-    # CHALLENGE 1: Play around with confidence treshold
+    # CHALLENGE 1: Play around with confidence threshold
     # CHALLENGE 2: Decide which coin to pick up first
     for name, position in coins.items():
       robot.home()
@@ -117,18 +143,22 @@ def main():
       x = position[0]
       y = position[1]
       
-      print("[  INFO  ] Picking up %s..." % name)
+      rospy.loginfo("Picking up %s..." % name)
+      success = robot.go_to([x, y, 0.01])
       
-      if robot.go_to([x, y, 0.01]):
+      if success:
         robot.close_gripper()
         robot.home()
         robot.deposit()
         
-      print("Press Enter to pick up another coin")
-      raw_input()
+      # print("Press Enter to pick up another coin")
+      # raw_input()
 
-    print("[  INFO  ] No more coins. Going to sleep...")
+    rospy.loginfo("No more coins. Going to sleep...")
     robot.sleep()
+    ########################################################################################
+    #------------------------------------- End STEP 5 -------------------------------------#
+    ########################################################################################
 
   except rospy.ROSInterruptException:
     return

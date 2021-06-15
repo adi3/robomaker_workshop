@@ -7,15 +7,25 @@ import rospy
 from px100 import PX100
 import utilities as util
 
-ACCESS_PROFILE = "robomaker_workshop"
+ACCESS_PROFILE    = "robomaker_workshop"
+SIM_PROJECT_ARN   = "arn:aws:rekognition:eu-central-1:517502204741:project/PX100/1621861684686"
+SIM_MODEL_ARN     = "arn:aws:rekognition:eu-central-1:517502204741:project/PX100/version/PX100.2021-06-07T01.15.17/1623021317812"
+SIM_MODEL_NAME    = "PX100.2021-06-07T01.15.17"
+REAL_PROJECT_ARN  = ""
+REAL_MODEL_ARN    = ""
+REAL_MODEL_NAME   = ""
+
 ARN_BASE = "arn:aws:rekognition:eu-central-1:517502204741:project/PX100/"
 PROJECT_ID = "1621861684686"
 SIM_MODEL_NAME = "PX100.2021-06-07T01.15.17"
 REAL_MODEL_NAME = "PX100.2021-05-28T12.46.07"
 SIM_MODEL_ID = "1623021317812"
 REAL_MODEL_ID = "1622198767106"
-CONFIDENCE_THRESHOLD = 85
 
+CONFIDENCE_THRESHOLD = 85
+IMAGE_NAME = "image_cap.png"
+
+return
 
 def main():
   # Sim option will use move_it to drive arm in Gazebo
@@ -35,9 +45,13 @@ def main():
   access_profile = "" if _internal else ACCESS_PROFILE
 
   # Select model based on real or simulated option
-  model_name = SIM_MODEL_NAME if _sim else REAL_MODEL_NAME
-  model_id = SIM_MODEL_ID if _sim else REAL_MODEL_ID
-  model_arn = ARN_BASE + 'version/' + model_name + '/' + model_id
+  #model_name = SIM_MODEL_NAME if _sim else REAL_MODEL_NAME
+  #model_id = SIM_MODEL_ID if _sim else REAL_MODEL_ID
+  #model_arn = ARN_BASE + 'version/' + model_name + '/' + model_id
+  
+  project_arn = SIM_PROJECT_ARN if _sim else REAL_PROJECT_ARN
+  model_arn   = SIM_MODEL_ARN if _sim else REAL_MODEL_ARN
+  model_name  = SIM_MODEL_NAME if _sim else REAL_MODEL_NAME
   
   [os.remove(img) for img in glob.glob("*.png")]
   
@@ -48,7 +62,7 @@ def main():
     #------------------------------------ Begin STEP 1 ------------------------------------#
     ########################################################################################
     rospy.loginfo("Checking state of Rekognition model...")
-    status = util.model_status(ARN_BASE + PROJECT_ID, model_name, access_profile)
+    status = util.model_status(project_arn, model_name, access_profile)
 
     rospy.loginfo('Current model state: %s' % status)
     if status != 'RUNNING':
@@ -58,7 +72,7 @@ def main():
     #------------------------------------- End STEP 1 -------------------------------------#
     ########################################################################################
 
-    return
+    
     ########################################################################################
     #------------------------------------ Begin STEP 2 ------------------------------------#
     ########################################################################################
@@ -66,7 +80,7 @@ def main():
     # raw_input()
     
     image = util.snap_image()
-    if image == None:
+    if image == None or image != IMAGE_NAME:
       rospy.logerr('Trouble snapping image from ROS topic')
       return
     
@@ -82,7 +96,7 @@ def main():
     rospy.logwarn('Press Enter to discover labels with Rekognition')
     # raw_input()
     
-    labels = util.find_coins(image, model_arn, CONFIDENCE_THRESHOLD, access_profile)
+    labels = util.find_coins(IMAGE_NAME, model, CONFIDENCE_THRESHOLD, access_profile)
     rospy.loginfo('Found %d labels in image' % len(labels))
     
     util.print_labels(labels)
