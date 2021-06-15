@@ -1,7 +1,7 @@
 <launch>
     <arg name="frame_rate" default="30"/>
-    <arg name="img_width" default="1980" />
-    <arg name="img_height" default="1080" />
+    <arg name="img_width" default="1280" />
+    <arg name="img_height" default="960" />
 
     <node name="camera" pkg="usb_cam" type="usb_cam_node" output="screen">
         <param name="video_device" value="/dev/video0" />
