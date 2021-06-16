@@ -28,7 +28,6 @@ pip install boto3
 
 cd ~/environment/aws_ws
 catkin build
-source ~/environment/aws_ws/devel/setup.bash
 
 echo "source ~/environment/aws_ws/devel/setup.bash" >> ~/.bashrc
 source ~/.bashrc
