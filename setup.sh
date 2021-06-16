@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -ef -o pipefail
+export DISPLAY=:0
 
 sudo apt update
 sudo DEBIAN_FRONTEND=noninteractive apt upgrade -yq
@@ -23,14 +23,15 @@ chmod +x xsarm_amd64_install.sh
 echo "N" | ./xsarm_amd64_install.sh
 rm xsarm_amd64_install.sh
 
-source ~/.bashrc
-echo "~/environment/aws_ws/src/robomaker_workshop/devel/setup.bash" >> ~/.bashrc
-
 sudo apt install python-catkin-tools imagemagick -y
 pip install boto3
 
 cd ~/environment/aws_ws
 catkin build
-source ~/environment/aws_ws/devel/setup.bash
 
-export DISPLAY=:0
+#echo "export SVGA_VGPU10=0" >> ~/.bashrc
+echo "export DISPLAY=:0" >> ~/.bashrc
+echo "source ~/environment/aws_ws/devel/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+
+sudo reboot

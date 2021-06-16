@@ -55,27 +55,29 @@
   </group>
   
   
-  
   <!--####################################################################-->
   <!--############  This code gets executed regardless of sim  ###########-->
   <!--####################################################################-->
   
-  <!--++++++++++++++++++++++++++  Begin STEP 7  ++++++++++++++++++++++++++-->
   <!--+++++++++++++ Start utility for capturing camera shots +++++++++++++-->
-
-  <!--+++++++++++++++++++++++++++  End STEP 7  +++++++++++++++++++++++++++-->
+  <node name="image_saver" pkg="image_view" type="image_saver" output="screen">
+    <remap from="image" to="camera/image_raw" />
+    <param name="save_all_image" value="false" />
+    <param name="filename_format" value="$(find robomaker_workshop)/scripts/image_cap.png" />
+  </node>
   
-
   
   <!--####################################################################-->
   <!--#########  This group gets executed only when sim is false  ########-->
   <!--####################################################################-->
   <group unless="$(arg sim)">
+	  
+    <!--+++++++++++++++++ Start up robot hardware interface ++++++++++++++++++-->
+    <include file="$(find interbotix_xsarm_control)/launch/xsarm_control.launch">
+        <arg name="robot_model" value="$(arg robot_model)"/>
+    </include>
     
-    <!--++++++++++++++++++++++++++  Begin STEP 8  ++++++++++++++++++++++++++-->
     <!--+++++++++++++++++ Publish local USB camera stream ++++++++++++++++++-->
-
-    <!--+++++++++++++++++++++++++++  End STEP 9  +++++++++++++++++++++++++++-->
     
   </group>
 	
