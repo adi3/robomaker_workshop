@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+export DISPLAY=:0
+
 sudo apt update
 sudo DEBIAN_FRONTEND=noninteractive apt upgrade -yq
 
@@ -30,5 +32,3 @@ pip install boto3
 cd ~/environment/aws_ws
 catkin build
 source ~/environment/aws_ws/devel/setup.bash
-
-export DISPLAY=:0
