@@ -52,6 +52,14 @@
 
     <!--+++++++++++++++++++++++++++  End STEP 6  +++++++++++++++++++++++++++-->
     
+    
+    <!--+++++++++++++ Start utility for capturing camera shots +++++++++++++-->
+    <node name="image_saver" pkg="image_view" type="image_saver" output="screen">
+      <remap from="image" to="camera/image_raw" />
+      <param name="save_all_image" value="false" />
+      <param name="filename_format" value="$(find robomaker_workshop)/scripts/image_cap.png" />
+    </node>
+    
   </group>
   
   
@@ -60,11 +68,11 @@
   <!--####################################################################-->
   
   <!--+++++++++++++ Start utility for capturing camera shots +++++++++++++-->
-  <node name="image_saver" pkg="image_view" type="image_saver" output="screen">
-    <remap from="image" to="camera/image_raw" />
-    <param name="save_all_image" value="false" />
-    <param name="filename_format" value="$(find robomaker_workshop)/scripts/image_cap.png" />
-  </node>
+  <!--<node name="image_saver" pkg="image_view" type="image_saver" output="screen">-->
+  <!--  <remap from="image" to="camera/image_raw" />-->
+  <!--  <param name="save_all_image" value="false" />-->
+  <!--  <param name="filename_format" value="$(find robomaker_workshop)/scripts/image_cap.png" />-->
+  <!--</node>-->
   
   
   <!--####################################################################-->
