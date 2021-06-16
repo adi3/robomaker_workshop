@@ -64,18 +64,6 @@
   
   
   <!--####################################################################-->
-  <!--############  This code gets executed regardless of sim  ###########-->
-  <!--####################################################################-->
-  
-  <!--+++++++++++++ Start utility for capturing camera shots +++++++++++++-->
-  <!--<node name="image_saver" pkg="image_view" type="image_saver" output="screen">-->
-  <!--  <remap from="image" to="camera/image_raw" />-->
-  <!--  <param name="save_all_image" value="false" />-->
-  <!--  <param name="filename_format" value="$(find robomaker_workshop)/scripts/image_cap.png" />-->
-  <!--</node>-->
-  
-  
-  <!--####################################################################-->
   <!--#########  This group gets executed only when sim is false  ########-->
   <!--####################################################################-->
   <group unless="$(arg sim)">
