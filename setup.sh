@@ -24,7 +24,7 @@ echo "N" | ./xsarm_amd64_install.sh
 rm xsarm_amd64_install.sh
 
 source ~/.bashrc
-echo "~/environment/aws_ws/devel/setup.bash" >> ~/.bashrc
+echo "source ~/environment/aws_ws/devel/setup.bash" >> ~/.bashrc
 
 sudo apt install python-catkin-tools imagemagick -y
 pip install boto3
