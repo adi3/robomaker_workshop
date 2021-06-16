@@ -33,3 +33,5 @@ catkin build
 echo "export DISPLAY=:0" >> ~/.bashrc
 echo "source ~/environment/aws_ws/devel/setup.bash" >> ~/.bashrc
 source ~/.bashrc
+
+sudo reboot
