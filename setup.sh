@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -ef -o pipefail
-
 sudo apt update
 sudo DEBIAN_FRONTEND=noninteractive apt upgrade -yq
 
