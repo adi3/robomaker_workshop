@@ -29,5 +29,7 @@ pip install boto3
 cd ~/environment/aws_ws
 catkin build
 
+echo "export SVGA_VGPU10=0" >> ~/.bashrc
+echo "export DISPLAY=:0" >> ~/.bashrc
 echo "source ~/environment/aws_ws/devel/setup.bash" >> ~/.bashrc
 source ~/.bashrc
