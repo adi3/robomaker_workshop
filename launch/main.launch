@@ -70,8 +70,8 @@
 	  
     <!--+++++++++++++++++ Start up robot hardware interface ++++++++++++++++++-->
     <include file="$(find interbotix_xsarm_control)/launch/xsarm_control.launch">
-        <arg name="robot_model" value="$(arg robot_model)"/>
-	<arg name="use_rviz" value="false"/>
+      <arg name="robot_model" value="$(arg robot_model)"/>
+	    <arg name="use_rviz" value="false"/>
     </include>
     
   </group>
