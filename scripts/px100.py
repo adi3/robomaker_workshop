@@ -48,11 +48,11 @@ class PX100(object):
 
     if self._SIM:
       moveit_commander.roscpp_initialize(sys.argv)
-      # rospy.init_node(self._ROBOT_NAME, anonymous=True)
+      rospy.init_node(self._ROBOT_NAME, anonymous=True)
       self._arm = moveit_commander.MoveGroupCommander(robot_description=self._DESC_PARAM, name=self._ARM_NAME)
       self._gripper = moveit_commander.MoveGroupCommander(robot_description=self._DESC_PARAM, name=self._GRIPPER_NAME)
     else:
-      robot = InterbotixManipulatorXS(self._ROBOT_NAME, group_name=self._ARM_NAME, gripper_name=self._GRIPPER_NAME)
+      robot = InterbotixManipulatorXS(self._ROBOT_NAME, group_name="arm", gripper_name="gripper")
       self._arm = robot.arm
       self._gripper = robot.gripper
 
