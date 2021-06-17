@@ -34,7 +34,7 @@ def main():
   [os.remove(img) for img in glob.glob("*.png")]
   
   try:
-    rospy.init_node("main", anonymous=True)
+    robot = PX100(simulated = _sim)
     
     if not _sim and not REAL_MODEL_ARN:
       rospy.logerr('Model ARN undefined for real hardware')
