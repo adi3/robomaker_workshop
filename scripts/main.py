@@ -16,7 +16,6 @@ CONFIDENCE_THRESHOLD = 85
 
 
 def main():
-
   # Sim option will use move_it to drive arm in Gazebo
   # Otherwise script will attempt to move physical arm
   _sim = False
@@ -48,20 +47,29 @@ def main():
     ########################################################################################
     #------------------------------------ Begin STEP 1 ------------------------------------#
     ########################################################################################
-    
-    # Add code here
-    
+    rospy.loginfo("Checking state of Rekognition model...")
+    status = util.model_status(project_name, model_name, access_profile)
+
+    rospy.loginfo('Current model state: %s' % status)
+    if status != 'RUNNING':
+      rospy.logerr('Rekognition model needs to be in RUNNING state')
+      return
     ########################################################################################
     #------------------------------------- End STEP 1 -------------------------------------#
     ########################################################################################
-
+   
    
     ########################################################################################
     #------------------------------------ Begin STEP 2 ------------------------------------#
     ########################################################################################
-
-    # Add code here
+    rospy.logwarn('Press Enter to discover labels with Rekognition')
+    raw_input()
     
+    labels = util.find_coins(IMAGE_NAME, model_arn, CONFIDENCE_THRESHOLD, access_profile)
+    rospy.loginfo('Found %d labels in image' % len(labels))
+    
+    util.print_labels(labels)
+    util.display_labels(image, labels)
     ########################################################################################
     #------------------------------------- End STEP 2 -------------------------------------#
     ########################################################################################
@@ -70,9 +78,19 @@ def main():
     ########################################################################################
     #------------------------------------ Begin STEP 3 ------------------------------------#
     ########################################################################################
+    rospy.logwarn("Press Enter to transform coin positions into physical coordinates")
+    raw_input()
     
-    # Add code here
+    rospy.loginfo('Transforming pixels to physical coordinates...')
+    coins = {}
     
+    for l in labels:
+      name = l['Name']
+      x, y = util.get_coin_position(l['Geometry']['BoundingBox'])
+      rospy.loginfo(name)
+      rospy.loginfo('\tX: ' + str(x) + ' m')
+      rospy.loginfo('\tY: ' + str(y) + ' m')
+      coins[name] = [x, y]
     ########################################################################################
     #------------------------------------- End STEP 3 -------------------------------------#
     ########################################################################################
@@ -81,9 +99,31 @@ def main():
     ########################################################################################
     #------------------------------------ Begin STEP 4 ------------------------------------#
     ########################################################################################
+    rospy.logwarn("Press Enter to instruct robot to pick a coin")
+    raw_input()
     
-    # Add code here
+    robot = PX100(simulated = _sim)
 
+    for name, position in coins.items():
+      robot.home()
+      robot.open_gripper()
+
+      x = position[0]
+      y = position[1]
+      
+      rospy.loginfo("Picking up %s..." % name)
+      success = robot.go_to([x, y, 0.01])
+      
+      if success:
+        robot.close_gripper()
+        robot.home()
+        robot.deposit()
+        
+      print("Press Enter to pick up another coin")
+      raw_input()
+
+    rospy.loginfo("No more coins. Going to sleep...")
+    robot.sleep()
     ########################################################################################
     #------------------------------------- End STEP 4 -------------------------------------#
     ########################################################################################

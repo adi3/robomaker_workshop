@@ -18,40 +18,52 @@
         
     <!--++++++++++++++++++++++++++  Begin STEP 1  ++++++++++++++++++++++++++-->
     <!--+++++++++++++++++  Initiate simulation environment  ++++++++++++++++-->
-
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+      <arg name="world_name" value="$(arg world_name)"/>
+    </include>
     <!--+++++++++++++++++++++++++++  End STEP 1  +++++++++++++++++++++++++++-->
     
 	  
     <!--++++++++++++++++++++++++++  Begin STEP 2  ++++++++++++++++++++++++++-->
     <!--++++++++++++  Publish statics and visuals of robot arm  ++++++++++++-->
-    
+    <param name="robot_description" command="xacro $(find robomaker_workshop)/urdf/$(arg robot_model).urdf.xacro" />
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+	  
+    <node pkg="gazebo_ros" name="robot_spawner" type="spawn_model" respawn="false" output="screen"
+      args="-urdf -model $(arg robot_model) -param robot_description -x $(arg x_offset) -z $(arg table_height)"/>
     <!--+++++++++++++++++++++++++++  End STEP 2  +++++++++++++++++++++++++++-->
     
 	  
     <!--++++++++++++++++++++++++++  Begin STEP 3  ++++++++++++++++++++++++++-->
     <!--++++++++++++++++++  Set up controllers for robot  ++++++++++++++++++-->
-	  
+    <rosparam file="$(find robomaker_workshop)/config/controllers.yaml" command="load"/>
+    
+    <node pkg="controller_manager" name="controller" type="controller_manager" respawn="false"
+      output="screen" args="spawn arm_controller gripper_controller joint_state_controller"/>
     <!--+++++++++++++++++++++++++++  End STEP 3  +++++++++++++++++++++++++++-->
       
       
     <!--++++++++++++++++++++++++++  Begin STEP 4  ++++++++++++++++++++++++++-->
     <!--++++++++++++++  Open Rviz visualization for the system ++++++++++++++-->
-
+    <node name="rviz" pkg="rviz" type="rviz" respawn="false" output="screen"
+      args="-f world -d $(find robomaker_workshop)/rviz/px100.rviz">
+    </node>
     <!--+++++++++++++++++++++++++++  End STEP 4  +++++++++++++++++++++++++++-->
   
   
-    <!-- TODO: see if moveit setup is only needed during sim -->
     <!--++++++++++++++++++++++++++  Begin STEP 5  ++++++++++++++++++++++++++-->
     <!--++++++++++++++++ Launch moveit planning integration ++++++++++++++++-->
-
+    <include file="$(find interbotix_xsarm_moveit)/launch/move_group.launch">
+      <arg name="robot_model" value="$(arg robot_model)"/>
+      <arg name="dof" value="$(arg dof)"/>
+    </include>
     <!--+++++++++++++++++++++++++++  End STEP 5  +++++++++++++++++++++++++++-->
     
     
     <!--++++++++++++++++++++++++++  Begin STEP 6  ++++++++++++++++++++++++++-->
     <!--++++++++++++++++++ Set robot to initial position +++++++++++++++++++-->
-
+    <node pkg="robomaker_workshop" name="init" type="init.py" output="screen" />
     <!--+++++++++++++++++++++++++++  End STEP 6  +++++++++++++++++++++++++++-->
-    
     
     <!--+++++++++++++ Start utility for capturing camera shots +++++++++++++-->
     <node name="image_saver" pkg="image_view" type="image_saver" output="screen">
@@ -62,8 +74,8 @@
     
   </group>
   
-  
-  
+
+
   <!--####################################################################-->
   <!--#########  This group gets executed only when sim is false  ########-->
   <!--####################################################################-->
@@ -71,9 +83,15 @@
 	  
     <!--+++++++++++++++++ Start up robot hardware interface ++++++++++++++++++-->
     <include file="$(find interbotix_xsarm_control)/launch/xsarm_control.launch">
-        <arg name="robot_model" value="$(arg robot_model)"/>
+      <arg name="robot_model" value="$(arg robot_model)"/>
     </include>
     
+    <!--+++++++++++++++++ Publish local USB camera stream ++++++++++++++++++-->
+    <!--<include file="$(find robomaker_workshop)/launch/camera.launch" />-->
+    
   </group>
+  
+  <!--+++++++++  Publish camera stream to Kinesis Video Streams  +++++++++-->
+  <!--<include file="$(find robomaker_workshop)/launch/kvstreamer.launch" />-->
 	
 </launch>
