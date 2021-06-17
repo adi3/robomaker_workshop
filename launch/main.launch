@@ -62,7 +62,7 @@
     
     <!--++++++++++++++++++++++++++  Begin STEP 6  ++++++++++++++++++++++++++-->
     <!--++++++++++++++++++ Set robot to initial position +++++++++++++++++++-->
-    <node pkg="robomaker_workshop" name="init" type="init.py" output="screen" />
+    <node pkg="robomaker_workshop" name="init" type="init.py --sim" output="screen" />
     <!--+++++++++++++++++++++++++++  End STEP 6  +++++++++++++++++++++++++++-->
     
     

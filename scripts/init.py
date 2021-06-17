@@ -12,16 +12,13 @@ def main():
   if len(sys.argv) > 1:
     if sys.argv[1] == "--sim":
       _sim = True
-      
-  rospy.init_node("init", anonymous=True)
-  robot = PX100(simulated = _sim)
     
   try:
+    robot = PX100(simulated = _sim)
+    
     robot.home()
-    if robot.sleep():
-      rospy.loginfo("Initialized robot to sleep position")
-    else:
-      rospy.loginfo("Failed to initialize robot correctly")
+    robot.sleep()
+    rospy.loginfo("Robot initialization successful")
     
   except rospy.ROSInterruptException:
     return
