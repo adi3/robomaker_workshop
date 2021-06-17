@@ -9,6 +9,7 @@ def main():
   robot = PX100()
     
   try:
+    robot.home()
     if robot.sleep():
       rospy.loginfo("Initialized robot to sleep position")
     else:
