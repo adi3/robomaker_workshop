@@ -26,7 +26,6 @@
 	  
     <!--++++++++++++++++++++++++++  Begin STEP 2  ++++++++++++++++++++++++++-->
     <!--++++++++++++  Publish statics and visuals of robot arm  ++++++++++++-->
-    
     <param name="robot_description" command="xacro $(find robomaker_workshop)/urdf/$(arg robot_model).urdf.xacro" />
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 	  
@@ -35,7 +34,6 @@
     <!--+++++++++++++++++++++++++++  End STEP 2  +++++++++++++++++++++++++++-->
     
 	  
-    <!-- TODO: see if controllers are only needed during sim -->
     <!--++++++++++++++++++++++++++  Begin STEP 3  ++++++++++++++++++++++++++-->
     <!--++++++++++++++++++  Set up controllers for robot  ++++++++++++++++++-->
     <rosparam file="$(find robomaker_workshop)/config/controllers.yaml" command="load"/>
@@ -53,7 +51,6 @@
     <!--+++++++++++++++++++++++++++  End STEP 4  +++++++++++++++++++++++++++-->
   
   
-    <!-- TODO: see if moveit setup is only needed during sim -->
     <!--++++++++++++++++++++++++++  Begin STEP 5  ++++++++++++++++++++++++++-->
     <!--++++++++++++++++ Launch moveit planning integration ++++++++++++++++-->
     <include file="$(find interbotix_xsarm_moveit)/launch/move_group.launch">
@@ -68,42 +65,33 @@
     <node pkg="robomaker_workshop" name="init" type="init.py" output="screen" />
     <!--+++++++++++++++++++++++++++  End STEP 6  +++++++++++++++++++++++++++-->
     
+    <!--+++++++++++++ Start utility for capturing camera shots +++++++++++++-->
+    <node name="image_saver" pkg="image_view" type="image_saver" output="screen">
+      <remap from="image" to="camera/image_raw" />
+      <param name="save_all_image" value="false" />
+      <param name="filename_format" value="$(find robomaker_workshop)/scripts/image_cap.png" />
+    </node>
+    
   </group>
   
-  
-  
-  <!--####################################################################-->
-  <!--############  This code gets executed regardless of sim  ###########-->
-  <!--####################################################################-->
-  
-  <!--++++++++++++++++++++++++++  Begin STEP 7  ++++++++++++++++++++++++++-->
-  <!--+++++++++++++ Start utility for capturing camera shots +++++++++++++-->
-  <node name="image_saver" pkg="image_view" type="image_saver" output="screen">
-    <remap from="image" to="camera/image_raw" />
-    <param name="save_all_image" value="false" />
-    <param name="filename_format" value="$(find robomaker_workshop)/scripts/image_cap.png" />
-  </node>
-  <!--+++++++++++++++++++++++++++  End STEP 7  +++++++++++++++++++++++++++-->
-  
-  
-  <!--++++++++++++++++++++++++++  Begin STEP 8  ++++++++++++++++++++++++++-->
-  <!--+++++++++  Publish camera stream to Kinesis Video Streams  +++++++++-->
-  <!--<include file="$(find robomaker_workshop)/launch/kvstreamer.launch" />-->
-  <!--+++++++++++++++++++++++++++  End STEP 8  +++++++++++++++++++++++++++-->
-  
-  
-  
-  
+
+
   <!--####################################################################-->
   <!--#########  This group gets executed only when sim is false  ########-->
   <!--####################################################################-->
   <group unless="$(arg sim)">
+	  
+    <!--+++++++++++++++++ Start up robot hardware interface ++++++++++++++++++-->
+    <include file="$(find interbotix_xsarm_control)/launch/xsarm_control.launch">
+      <arg name="robot_model" value="$(arg robot_model)"/>
+    </include>
     
-    <!--++++++++++++++++++++++++++  Begin STEP 9  ++++++++++++++++++++++++++-->
     <!--+++++++++++++++++ Publish local USB camera stream ++++++++++++++++++-->
     <!--<include file="$(find robomaker_workshop)/launch/camera.launch" />-->
-    <!--+++++++++++++++++++++++++++  End STEP 9  +++++++++++++++++++++++++++-->
     
   </group>
+  
+  <!--+++++++++  Publish camera stream to Kinesis Video Streams  +++++++++-->
+  <!--<include file="$(find robomaker_workshop)/launch/kvstreamer.launch" />-->
 	
 </launch>

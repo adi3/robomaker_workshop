@@ -1,8 +1,0 @@
-<launch>
-
-  <arg name="robot_model"                       default=""/>
-
-  <param name="robot_description" command="xacro $(find robomaker_workshop)/urdf/$(arg robot_model).urdf.xacro" />
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
-  
-</launch>

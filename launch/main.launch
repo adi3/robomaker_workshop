@@ -63,6 +63,7 @@
   </group>
   
   
+  
   <!--####################################################################-->
   <!--#########  This group gets executed only when sim is false  ########-->
   <!--####################################################################-->
@@ -72,8 +73,6 @@
     <include file="$(find interbotix_xsarm_control)/launch/xsarm_control.launch">
         <arg name="robot_model" value="$(arg robot_model)"/>
     </include>
-    
-    <!--+++++++++++++++++ Publish local USB camera stream ++++++++++++++++++-->
     
   </group>
 	
