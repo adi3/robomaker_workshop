@@ -65,6 +65,7 @@
     <node pkg="robomaker_workshop" name="init" type="init.py" output="screen" />
     <!--+++++++++++++++++++++++++++  End STEP 6  +++++++++++++++++++++++++++-->
     
+    
     <!--+++++++++++++ Start utility for capturing camera shots +++++++++++++-->
     <node name="image_saver" pkg="image_view" type="image_saver" output="screen">
       <remap from="image" to="camera/image_raw" />
@@ -84,6 +85,9 @@
     <include file="$(find interbotix_xsarm_control)/launch/xsarm_control.launch">
       <arg name="robot_model" value="$(arg robot_model)"/>
     </include>
+    
+    <!--++++++++++++++++++ Set robot to initial position +++++++++++++++++++-->
+    <node pkg="robomaker_workshop" name="init" type="init.py" output="screen" />
     
     <!--+++++++++++++++++ Publish local USB camera stream ++++++++++++++++++-->
     <!--<include file="$(find robomaker_workshop)/launch/camera.launch" />-->
