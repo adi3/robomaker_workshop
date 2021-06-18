@@ -31,13 +31,13 @@ DECIMALS = 2
 
 
 # Fetch Rekognition project ARN from name
-def get_arn(project_name):
-	rekognition = boto3.client('rekognition')
+def get_arn(project_name, rekognition):
 	response = rekognition.describe_projects()
 	
 	for p in response['ProjectDescriptions']:
 		if p['ProjectArn'].split('/')[1] == project_name:
 			return p['ProjectArn']
+		
 	return None
 		
 	
@@ -47,7 +47,7 @@ def model_status(project_name, model_name, access_profile):
 	if access_profile:
 		rekognition = boto3.Session(profile_name=access_profile).client('rekognition')
 		
-	project_arn = get_arn(project_name)
+	project_arn = get_arn(project_name, rekognition)
 	response = rekognition.describe_project_versions(
 				ProjectArn=project_arn,
 				VersionNames=[model_name])
