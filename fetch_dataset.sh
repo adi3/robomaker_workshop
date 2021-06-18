@@ -11,7 +11,8 @@ unzip -q /tmp/px100-dataset.zip -d /tmp/px100-dataset
 echo -e "success"
 
 echo -ne "- Fetching name of S3 bucket associated with Rekognition Custom Labels..."
-BUCKET=$(aws s3 ls | awk '{print $3}' | grep "custom-labels-console")
+REGION=$(aws configure get region)
+BUCKET=$(aws s3 ls | awk '{print $3}' | grep "custom-labels-console-$REGION")
 echo -e "success"
 
 echo -ne "- Uploading images dataset to S3..."
