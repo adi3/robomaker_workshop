@@ -91,7 +91,7 @@
     <node pkg="robomaker_workshop" name="init" type="init.py" output="screen" />
     
     <!--+++++++++++++++++ Publish local USB camera stream ++++++++++++++++++-->
-    <!--<include file="$(find robomaker_workshop)/launch/camera.launch" />-->
+    <include file="$(find robomaker_workshop)/launch/camera.launch" />
     
   </group>
   
