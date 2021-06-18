@@ -32,6 +32,8 @@ catkin build
 #echo "export SVGA_VGPU10=0" >> ~/.bashrc
 echo "export DISPLAY=:0" >> ~/.bashrc
 echo "source ~/environment/aws_ws/devel/setup.bash" >> ~/.bashrc
+echo "export ROS_PACKAGE_PATH=/home/ubuntu/interbotix_ws/src:$ROS_PACKAGE_PATH" >> ~/.bashrc
+echo "export PYTHONPATH=/home/ubuntu/interbotix_ws/devel/lib/python2.7/dist-packages:$PYTHONPATH" >> ~/.bashrc
 source ~/.bashrc
 
 sudo reboot
