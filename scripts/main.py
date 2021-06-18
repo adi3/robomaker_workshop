@@ -7,10 +7,11 @@ import rospy
 from px100 import PX100
 import utilities as util
 
+
 SIM_MODEL_ARN     = "arn:aws:rekognition:eu-central-1:517502204741:project/PX100/version/PX100.2021-06-07T01.15.17/1623021317812"
 REAL_MODEL_ARN    = ""
+IMAGE_NAME        = "/home/ubuntu/environment/aws_ws/src/robomaker_workshop/image_cap.png"
 ACCESS_PROFILE    = "robomaker_workshop"
-IMAGE_NAME        = "image_cap.png"
 
 CONFIDENCE_THRESHOLD = 85
 

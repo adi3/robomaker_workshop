@@ -62,7 +62,7 @@
     
     <!--++++++++++++++++++++++++++  Begin STEP 6  ++++++++++++++++++++++++++-->
     <!--++++++++++++++++++ Set robot to initial position +++++++++++++++++++-->
-    <node pkg="robomaker_workshop" name="init" type="init.py --sim" output="screen" />
+    <node pkg="robomaker_workshop" name="init" type="init.py" output="screen" args="--sim" />
     <!--+++++++++++++++++++++++++++  End STEP 6  +++++++++++++++++++++++++++-->
     
     
@@ -70,7 +70,7 @@
     <node name="image_saver" pkg="image_view" type="image_saver" output="screen">
       <remap from="image" to="camera/image_raw" />
       <param name="save_all_image" value="false" />
-      <param name="filename_format" value="$(find robomaker_workshop)/scripts/image_cap.png" />
+      <param name="filename_format" value="$(find robomaker_workshop)/image_cap.png" />
     </node>
     
   </group>
