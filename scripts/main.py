@@ -70,7 +70,8 @@ def main():
     rospy.loginfo('Found %d labels in image' % len(labels))
     
     util.print_labels(labels)
-    util.display_labels(image, labels)
+    if _sim:
+      util.display_labels(IMAGE_NAME, labels)
     ########################################################################################
     #------------------------------------- End STEP 2 -------------------------------------#
     ########################################################################################
