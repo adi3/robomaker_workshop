@@ -98,10 +98,7 @@ def main():
       
       rospy.loginfo("Picking up %s..." % name)
       success = robot.pick(x, y)
-      
       if success:
-        robot.close_gripper()
-        robot.home()
         robot.deposit()
 
     rospy.loginfo("No more coins. Going to sleep...")

@@ -133,6 +133,8 @@ class PX100(object):
     success = self.go_to(goal)
     if success:
         self.close_gripper()
+        self.home()
+    return success
 
 
   def go_to(self, goal):
