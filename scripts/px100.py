@@ -36,10 +36,16 @@ class PX100(object):
     self._ARM_NAME = "interbotix_arm"
     self._GRIPPER_NAME = "interbotix_gripper"
     self._DESC_PARAM = "/robot_description"
-    self._X_OFFSET = -0.15   # Offset of robot from center of table
+    
+    # Offset of robot from center of table
+    self._X_OFFSET_SIM = 0.15
+    self._X_OFFSET_REAL = 0.1
+    # Height above table at which coin can be picked up
+    self._Z_OFFSET_SIM = 0.01
+    self._Z_OFFSET_REAL = 0.03
+    
     self._SLEEP_POSITIONS = [0.0, -1.88, 1.5, 0.8]   # [waist, shoulder, elbow, wrist_angle]
     self._DEPOSIT_POSITIONS = [2.5, 0.0, 0.8, -0.8]   # [waist, shoulder, elbow, wrist_angle]
-
     self._GRIPPER_OPEN = 0.035
     self._GRIPPER_CLOSE = 0.022
     
@@ -52,7 +58,7 @@ class PX100(object):
       self._arm = moveit_commander.MoveGroupCommander(robot_description=self._DESC_PARAM, name=self._ARM_NAME)
       self._gripper = moveit_commander.MoveGroupCommander(robot_description=self._DESC_PARAM, name=self._GRIPPER_NAME)
     else:
-      robot = InterbotixManipulatorXS(self._ROBOT_NAME, group_name="arm", gripper_name="gripper")
+      robot = InterbotixManipulatorXS(self._ROBOT_NAME, group_name="arm", gripper_name="gripper", gripper_pressure=0.8)
       self._arm = robot.arm
       self._gripper = robot.gripper
 
@@ -119,12 +125,23 @@ class PX100(object):
       self._arm.go_to_sleep_pose()
     
 
+  def pick(self, x, y):
+    x_offset = self._X_OFFSET_SIM if self._SIM else self._X_OFFSET_REAL
+    z_offset = self._Z_OFFSET_SIM if self._SIM else self._Z_OFFSET_REAL
+    goal = [x + x_offset, y, z_offset]
+    
+    success = self.go_to(goal)
+    if success:
+        self.close_gripper()
+        self.home()
+    return success
+
 
   def go_to(self, goal):
-    x = goal[0] - self._X_OFFSET
+    x = goal[0]
     y = goal[1]
     z = goal[2]
-    rospy.loginfo('Moving robot gripper to (%.2f, %.2f, %.2f)...' % (goal[0], y, z))
+    rospy.loginfo('Moving robot gripper to (%.2f, %.2f, %.2f)...' % (x, y, z))
 
     # Separate Y and XZ movements
     waist_angle = np.arctan2(y, x)
@@ -179,5 +196,5 @@ class PX100(object):
       # print(current)
       return check([x, y], [current.x, current.y], 0.01)
     else:
-     theta_list, result = self._arm.set_ee_pose_components(x=x_dash, z=z)
+     theta_list, result = self._arm.set_ee_pose_components(x=x, y=y, z=z)
      return result
