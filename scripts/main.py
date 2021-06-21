@@ -57,9 +57,6 @@ def main():
     ########################################################################################
     #------------------------------------ Begin STEP 2 ------------------------------------#
     ########################################################################################
-    rospy.logwarn('Press Enter to discover labels with Rekognition')
-    raw_input()
-    
     labels = util.find_coins(IMAGE_NAME, model_arn, CONFIDENCE_THRESHOLD, access_profile)
     rospy.loginfo('Found %d labels in image' % len(labels))
     
@@ -74,15 +71,12 @@ def main():
     ########################################################################################
     #------------------------------------ Begin STEP 3 ------------------------------------#
     ########################################################################################
-    rospy.logwarn("Press Enter to transform coin positions into physical coordinates")
-    raw_input()
-    
     rospy.loginfo('Transforming pixels to physical coordinates...')
     coins = {}
     
     for l in labels:
       name = l['Name']
-      x, y = util.get_coin_position(l['Geometry']['BoundingBox'])
+      x, y = util.get_coin_position(l['Geometry']['BoundingBox'], _sim)
       rospy.loginfo(name)
       rospy.loginfo('\tX: ' + str(x) + ' m')
       rospy.loginfo('\tY: ' + str(y) + ' m')
@@ -95,9 +89,6 @@ def main():
     ########################################################################################
     #------------------------------------ Begin STEP 4 ------------------------------------#
     ########################################################################################
-    rospy.logwarn("Press Enter to instruct robot to pick a coin")
-    raw_input()
-
     for name, position in coins.items():
       robot.home()
       robot.open_gripper()
@@ -106,15 +97,12 @@ def main():
       y = position[1]
       
       rospy.loginfo("Picking up %s..." % name)
-      success = robot.go_to([x, y, 0.01])
+      success = robot.pick(x, y)
       
       if success:
         robot.close_gripper()
         robot.home()
         robot.deposit()
-        
-      print("Press Enter to pick up another coin")
-      raw_input()
 
     rospy.loginfo("No more coins. Going to sleep...")
     robot.sleep()
