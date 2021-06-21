@@ -19,17 +19,11 @@ def main():
 
   # Sim option will use move_it to drive arm in Gazebo
   # Otherwise script will attempt to move physical arm
-  _sim = False
-  if len(sys.argv) > 1:
-    if sys.argv[1] == "--sim":
-      _sim = True
+  _sim = True if "--sim" in sys.argv else False
       
   # If accessing Rekognition model from an internal account,
   # then no separate role-based profile is needed
-  _internal = False
-  if len(sys.argv) > 2:
-    if sys.argv[2] == "--internal":
-      _internal = True
+  _internal = True if "--internal" in sys.argv else False
   
   [os.remove(img) for img in glob.glob("*.png")]
   

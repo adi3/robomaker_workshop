@@ -8,10 +8,7 @@ from px100 import PX100
 def main():
   # Sim option will use move_it to drive arm in Gazebo
   # Otherwise script will attempt to move physical arm
-  _sim = False
-  if len(sys.argv) > 1:
-    if sys.argv[1] == "--sim":
-      _sim = True
+  _sim = True if "--sim" in sys.argv else False
     
   try:
     robot = PX100(simulated = _sim)
