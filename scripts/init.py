@@ -15,6 +15,7 @@ def main():
     
     robot.home()
     robot.sleep()
+    robot.close_gripper()
     rospy.loginfo("Robot initialization successful")
     
   except rospy.ROSInterruptException:
