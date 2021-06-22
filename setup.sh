@@ -36,4 +36,5 @@ echo "export ROS_PACKAGE_PATH=/home/ubuntu/interbotix_ws/src:$ROS_PACKAGE_PATH" 
 echo "export PYTHONPATH=/home/ubuntu/interbotix_ws/devel/lib/python2.7/dist-packages:$PYTHONPATH" >> ~/.bashrc
 source ~/.bashrc
 
-sudo reboot
+echo "[[ -f ~/.bashrc ]] && source ~/.bashrc" >> ~/.bash_profile
+#sudo reboot
