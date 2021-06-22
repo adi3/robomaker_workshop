@@ -25,9 +25,11 @@ FONT_SIZE = 30
 # FONT_TYPE = '/Library/Fonts/Arial.ttf'
 # FONT_SIZE = 50
 
-X_RES_SCALING = 0.435
-Y_RES_SCALING = 0.765
-DECIMALS = 2
+ROUNDOFF = 2
+X_RES_SCALING_SIM = 0.435
+Y_RES_SCALING_SIM = 0.765
+X_RES_SCALING_REAL = -0.195
+Y_RES_SCALING_REAL = -0.265
 
 
 # Fetch Rekognition project ARN from name
@@ -37,7 +39,7 @@ def get_arn(project_name, rekognition):
 	for p in response['ProjectDescriptions']:
 		if p['ProjectArn'].split('/')[1] == project_name:
 			return p['ProjectArn']
-		
+			
 	return None
 		
 	
@@ -132,7 +134,7 @@ def display_labels(image_name, labels):
 
 
 # Obtain physical position of coin from Rekognition bbox
-def get_coin_position(bbox):
+def get_coin_position(bbox, sim):
 	"""
     Rekognition provides top-left corner and size of bounding box.
     We exploit the fact that ratios between points in both the image and the physical world remain the same
@@ -140,10 +142,13 @@ def get_coin_position(bbox):
     2. Obtain fraction position of midpoint with respect to center of frame
     3. Multiply with a constant scaling factor to get physical coordinates
     """
+    
+	x_res_scaling = X_RES_SCALING_SIM if sim else X_RES_SCALING_REAL
+	y_res_scaling = Y_RES_SCALING_SIM if sim else Y_RES_SCALING_REAL
 	
-	x = 2 * X_RES_SCALING * (0.5 - (bbox['Top'] + 0.5*bbox['Height']))
-	y = 2 * Y_RES_SCALING * (0.5 - (bbox['Left'] + 0.5*bbox['Width']))
-	return np.around(x, decimals=DECIMALS), np.around(y, decimals=DECIMALS)
+	x = 2 * x_res_scaling * (0.5 - (bbox['Top'] + 0.5*bbox['Height']))
+	y = 2 * y_res_scaling * (0.5 - (bbox['Left'] + 0.5*bbox['Width']))
+	return np.around(x, decimals=ROUNDOFF), np.around(y, decimals=ROUNDOFF)
 	
 	
 	
