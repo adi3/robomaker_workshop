@@ -34,7 +34,7 @@ echo "export DISPLAY=:0" >> ~/.bashrc
 echo "source ~/environment/aws_ws/devel/setup.bash" >> ~/.bashrc
 echo "export ROS_PACKAGE_PATH=/home/ubuntu/interbotix_ws/src:$ROS_PACKAGE_PATH" >> ~/.bashrc
 echo "export PYTHONPATH=/home/ubuntu/interbotix_ws/devel/lib/python2.7/dist-packages:$PYTHONPATH" >> ~/.bashrc
-source ~/.bashrc
 
 echo "[[ -f ~/.bashrc ]] && source ~/.bashrc" >> ~/.bash_profile
+source ~/.bash_profile
 #sudo reboot
