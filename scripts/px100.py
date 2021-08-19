@@ -125,6 +125,17 @@ class PX100(object):
       self._arm.go_to_sleep_pose()
     
 
+
+  def set_joints(self, joints):
+    if self._SIM:
+      self._arm.go(joints, wait=True)
+      self._arm.stop()
+      return self._arm.get_current_joint_values() == joints
+    else:
+      return self._arm.set_joint_positions(joints)
+
+
+
   def pick(self, x, y):
     x_offset = self._X_OFFSET_SIM if self._SIM else self._X_OFFSET_REAL
     z_offset = self._Z_OFFSET_SIM if self._SIM else self._Z_OFFSET_REAL
@@ -135,6 +146,7 @@ class PX100(object):
         self.close_gripper()
         self.home()
     return success
+
 
 
   def go_to(self, goal):
