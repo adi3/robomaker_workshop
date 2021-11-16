@@ -117,9 +117,6 @@ def display_labels(image_name, labels):
 		width = img_width * bbox['Width']
 		height = img_height * bbox['Height']
 
-		fnt = ImageFont.truetype(FONT_TYPE, FONT_SIZE)
-		draw.text((left,top), l['Name'], fill=LABEL_COLOR, font=fnt)
-
 		points = (
 			(left, top),
 			(left + width, top),
@@ -127,7 +124,10 @@ def display_labels(image_name, labels):
 			(left , top + height),
 			(left, top)
 		)
-		draw.line(points, fill=LABEL_COLOR, width=5)
+		draw.line(points, fill=LABEL_COLOR, width=3)
+		
+		fnt = ImageFont.truetype(FONT_TYPE, FONT_SIZE)
+		draw.text((left, top+height), l['Name'], fill=LABEL_COLOR, font=fnt)
 
 	image.show()
 
