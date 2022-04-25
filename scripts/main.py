@@ -13,7 +13,7 @@ REAL_MODEL_ARN    = ""
 IMAGE_NAME        = "/home/ubuntu/environment/aws_ws/src/robomaker_workshop/images/image_cap.png"
 ACCESS_PROFILE    = "robomaker_workshop"
 
-CONFIDENCE_THRESHOLD = 70
+CONFIDENCE_THRESHOLD = 85
 
 def main():
   # Sim option will use move_it to drive arm in Gazebo
