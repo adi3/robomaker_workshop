@@ -8,22 +8,24 @@ from px100 import PX100
 import utilities as util
 
 
-SIM_MODEL_ARN     = "arn:aws:rekognition:eu-central-1:517502204741:project/PX100/version/PX100.2021-06-07T01.15.17/1623021317812"
+SIM_MODEL_ARN     = "arn:aws:rekognition:eu-central-1:517502204741:project/PX100-Sim/version/PX100-Sim.2022-04-25T09.51.03/1650873063273"
 REAL_MODEL_ARN    = ""
 IMAGE_NAME        = "/home/ubuntu/environment/aws_ws/src/robomaker_workshop/images/image_cap.png"
 ACCESS_PROFILE    = "robomaker_workshop"
 
-CONFIDENCE_THRESHOLD = 85
-
+CONFIDENCE_THRESHOLD = 70
 
 def main():
   # Sim option will use move_it to drive arm in Gazebo
   # Otherwise script will attempt to move physical arm
-  _sim = True if "--sim" in sys.argv else False
+  _sim = False if "--real" in sys.argv else True
       
   # If accessing Rekognition model from an internal account,
   # then no separate role-based profile is needed
-  _internal = True if "--internal" in sys.argv else False
+  _internal = False if "--external" in sys.argv else True
+  
+  # Use to break program execution midway
+  _breakpoint = True if "--break" in sys.argv else False
   
   [os.remove(img) for img in glob.glob("*.png")]
   
@@ -53,10 +55,13 @@ def main():
     #------------------------------------- End STEP 1 -------------------------------------#
     ########################################################################################
    
-   
+    
     ########################################################################################
     #------------------------------------ Begin STEP 2 ------------------------------------#
     ########################################################################################
+    util.snap_image()
+    rospy.loginfo('Snapped image: %s' % IMAGE_NAME)
+    
     labels = util.find_coins(IMAGE_NAME, model_arn, CONFIDENCE_THRESHOLD, access_profile)
     rospy.loginfo('Found %d labels in image' % len(labels))
     
@@ -67,6 +72,8 @@ def main():
     #------------------------------------- End STEP 2 -------------------------------------#
     ########################################################################################
 
+    if _breakpoint:
+      return
 
     ########################################################################################
     #------------------------------------ Begin STEP 3 ------------------------------------#

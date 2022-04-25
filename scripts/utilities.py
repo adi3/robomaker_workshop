@@ -65,7 +65,7 @@ def snap_image():
 		rospy.ServiceProxy(SNAP_SRV, Empty)()
 		rospy.sleep(1)
 		[os.remove(ini) for ini in glob.glob("*.ini")]
-		return sorted(glob.glob("*.png"))[-1]
+		# return sorted(glob.glob("*.png"))[-1]
 	except rospy.ServiceException as e:
 		rospy.logerr("Service call failed: %s"%e)
 		return None

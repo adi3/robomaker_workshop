@@ -3,7 +3,7 @@
   <arg name="sim" default="true"/>
   <arg name="robot_model" default="px100"/>
   <arg name="dof" default="4"/>
-  <arg name="world_name" default="$(find robomaker_workshop)/worlds/px100.world"/>
+  <arg name="world_name" default="$(find robomaker_workshop)/worlds/px100-2.world"/>
   <arg name="table_height" default="0.715"/>
   <arg name="x_offset" default="-0.15"/>
   
@@ -45,9 +45,9 @@
       
     <!--++++++++++++++++++++++++++  Begin STEP 4  ++++++++++++++++++++++++++-->
     <!--++++++++++++++  Open Rviz visualization for the system ++++++++++++++-->
-    <node name="rviz" pkg="rviz" type="rviz" respawn="false" output="screen"
-      args="-f world -d $(find robomaker_workshop)/rviz/px100.rviz">
-    </node>
+    <!--<node name="rviz" pkg="rviz" type="rviz" respawn="false" output="screen"-->
+    <!--  args="-f world -d $(find robomaker_workshop)/rviz/px100.rviz">-->
+    <!--</node>-->
     <!--+++++++++++++++++++++++++++  End STEP 4  +++++++++++++++++++++++++++-->
   
   

@@ -44,22 +44,17 @@
     
 		<include>
     	<uri>model://etherium</uri>
-    	<pose frame=''>0.13 0.02 0.715 0 -0 -1.6</pose>
-    </include>
-
-		<include>
-    	<uri>model://monero</uri>
-    	<pose frame=''>0.1 -0.1 0.715 0 -0 -1.6</pose>
+    	<pose frame=''>0.14 0.0 0.715 0 -0 -1.6</pose>
     </include>
 
 		<include>
     	<uri>model://bitcoin</uri>
-    	<pose frame=''>0.12 -0.08 0.715 0 -0 -1.6</pose>
+    	<pose frame=''>0.13 -0.06 0.715 0 -0 -1.6</pose>
     </include>
 
 		<include>
     	<uri>model://dash</uri>
-    	<pose frame=''>0.11 -0.09 0.715 0 -0 -1.6</pose>
+    	<pose frame=''>0.10 -0.13 0.715 0 -0 -1.6</pose>
     </include>
 
 		<include>
