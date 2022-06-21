@@ -28,6 +28,7 @@ mv ~/interbotix_ws/src/* ~/aws_ws/src/
 rm -rf ~/interbotix_ws
 rosdep update
 rosdep install --from-paths src --ignore-src --rosdistro melodic -r -y
+source /opt/ros/melodic/setup.bash
 catkin_make
 
 #echo "[[ -f ~/.bashrc ]] && source ~/.bashrc" >> ~/.bash_profile
