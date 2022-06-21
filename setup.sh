@@ -5,7 +5,7 @@
 sudo apt update
 sudo DEBIAN_FRONTEND=noninteractive apt upgrade -yq
 
-sudo apt install python-catkin-tools fswebcam -y
+sudo apt install python-pip python-catkin-tools fswebcam -y
 pip install boto3
 
 #aws configure set profile.robomaker_workshop.role_arn arn:aws:iam::517502204741:role/ResourcesForRoboticsWorkshop
@@ -14,7 +14,7 @@ pip install boto3
 
 mkdir -p ~/aws_ws/src/
 cd ~/aws_ws/src/
-git clone https://github.com/adi3/robomaker_workshop
+git clone -b completed https://github.com/adi3/robomaker_workshop
 
 cd ~/
 curl 'https://raw.githubusercontent.com/Interbotix/interbotix_ros_manipulators/main/interbotix_ros_xsarms/install/rpi4/xsarm_rpi4_install.sh' > xsarm_rpi4_install.sh
