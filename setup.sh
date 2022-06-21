@@ -9,8 +9,7 @@ pip install boto3
 #aws configure set profile.robomaker_workshop.source_profile default
 #aws configure set profile.robomaker_workshop.region eu-central-1
 
-mkdir -p ~/aws_ws/src/
-cd ~/aws_ws/src/
+mkdir -p ~/aws_ws/src/ && cd ~/aws_ws/src/
 git clone -b completed https://github.com/adi3/robomaker_workshop
 
 cd ~/
