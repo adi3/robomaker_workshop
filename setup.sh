@@ -17,7 +17,7 @@ cd ~/aws_ws/src/
 git clone -b completed https://github.com/adi3/robomaker_workshop
 
 cd ~/
-curl 'https://raw.githubusercontent.com/Interbotix/interbotix_ros_manipulators/main/interbotix_ros_xsarms/install/rpi4/xsarm_rpi4_install.sh' > xsarm_rpi4_install.sh
+curl https://raw.githubusercontent.com/Interbotix/interbotix_ros_manipulators/main/interbotix_ros_xsarms/install/rpi4/xsarm_rpi4_install.sh > xsarm_rpi4_install.sh
 chmod +x xsarm_rpi4_install.sh
 echo "N" | ./xsarm_rpi4_install.sh
 rm xsarm_rpi4_install.sh
