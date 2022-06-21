@@ -1,6 +1,6 @@
 <launch>
 
-  <arg name="sim" default="true"/>
+  <arg name="sim" default="false"/>
   <arg name="robot_model" default="px100"/>
   <arg name="dof" default="4"/>
   <arg name="world_name" default="$(find robomaker_workshop)/worlds/px100-2.world"/>
