@@ -5,7 +5,7 @@
 sudo apt update
 sudo apt upgrade -y
 
-sudo apt install python-pip python-catkin-tools fswebcam -y
+sudo apt install python-pip fswebcam -y
 pip install boto3
 
 #aws configure set profile.robomaker_workshop.role_arn arn:aws:iam::517502204741:role/ResourcesForRoboticsWorkshop
