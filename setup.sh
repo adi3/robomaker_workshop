@@ -3,7 +3,7 @@
 #export DISPLAY=:0
 
 sudo apt update
-sudo DEBIAN_FRONTEND=noninteractive apt upgrade -yq
+sudo apt upgrade -y
 
 sudo apt install python-pip python-catkin-tools fswebcam -y
 pip install boto3
