@@ -8,9 +8,9 @@ sudo DEBIAN_FRONTEND=noninteractive apt upgrade -yq
 sudo apt install python-catkin-tools fswebcam -y
 pip install boto3
 
-aws configure set profile.robomaker_workshop.role_arn arn:aws:iam::517502204741:role/ResourcesForRoboticsWorkshop
-aws configure set profile.robomaker_workshop.source_profile default
-aws configure set profile.robomaker_workshop.region eu-central-1
+#aws configure set profile.robomaker_workshop.role_arn arn:aws:iam::517502204741:role/ResourcesForRoboticsWorkshop
+#aws configure set profile.robomaker_workshop.source_profile default
+#aws configure set profile.robomaker_workshop.region eu-central-1
 
 mkdir -p ~/aws_ws/src/
 cd ~/aws_ws/src/
