@@ -18,14 +18,15 @@ chmod +x xsarm_rpi4_install.sh
 ./xsarm_rpi4_install.sh
 rm xsarm_rpi4_install.sh
 
+echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
+echo "source ~/aws_ws/devel/setup.bash" >> ~/.bashrc
+echo "export ROS_PACKAGE_PATH=/home/ubuntu/interbotix_ws/src:$ROS_PACKAGE_PATH" >> ~/.bashrc
+echo "export PYTHONPATH=/home/ubuntu/interbotix_ws/devel/lib/python2.7/dist-packages:$PYTHONPATH" >> ~/.bashrc
+
 cd ~/aws_ws
 rosdep update
 rosdep install --from-paths src --ignore-src --rosdistro melodic -r -y
 catkin_make
-
-echo "source ~/aws_ws/devel/setup.bash" >> ~/.bashrc
-echo "export ROS_PACKAGE_PATH=/home/ubuntu/interbotix_ws/src:$ROS_PACKAGE_PATH" >> ~/.bashrc
-echo "export PYTHONPATH=/home/ubuntu/interbotix_ws/devel/lib/python2.7/dist-packages:$PYTHONPATH" >> ~/.bashrc
 
 #echo "[[ -f ~/.bashrc ]] && source ~/.bashrc" >> ~/.bash_profile
 #source ~/.bash_profile
