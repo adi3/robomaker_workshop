@@ -5,33 +5,33 @@ export DISPLAY=:0
 sudo apt update
 sudo DEBIAN_FRONTEND=noninteractive apt upgrade -yq
 
+sudo apt install python-catkin-tools fswebcam -y
+pip install boto3
+
 aws configure set profile.robomaker_workshop.role_arn arn:aws:iam::517502204741:role/ResourcesForRoboticsWorkshop
 aws configure set profile.robomaker_workshop.source_profile default
 aws configure set profile.robomaker_workshop.region eu-central-1
 
-mkdir -p ~/environment/aws_ws/src/
-cd ~/environment/aws_ws/src/
+mkdir -p ~/aws_ws/src/
+cd ~/aws_ws/src/
 git clone https://github.com/adi3/robomaker_workshop
 
-cd ~/environment/aws_ws
+cd ~/aws_ws
 rosdep update
 rosdep install --from-paths src --ignore-src --rosdistro melodic -r -y
 
-cd ~/environment
-curl 'https://raw.githubusercontent.com/Interbotix/interbotix_ros_manipulators/main/interbotix_ros_xsarms/install/amd64/xsarm_amd64_install.sh' > xsarm_amd64_install.sh
+cd ~/
+curl 'https://raw.githubusercontent.com/Interbotix/interbotix_ros_manipulators/main/interbotix_ros_xsarms/install/rpi4/xsarm_rpi4_install.sh' > xsarm_rpi4_install.sh
 chmod +x xsarm_amd64_install.sh
 echo "N" | ./xsarm_amd64_install.sh
 rm xsarm_amd64_install.sh
 
-sudo apt install python-catkin-tools imagemagick -y
-pip install boto3
-
-cd ~/environment/aws_ws
+cd ~/aws_ws
 catkin build
 
 #echo "export SVGA_VGPU10=0" >> ~/.bashrc
 echo "export DISPLAY=:0" >> ~/.bashrc
-echo "source ~/environment/aws_ws/devel/setup.bash" >> ~/.bashrc
+echo "source ~/aws_ws/devel/setup.bash" >> ~/.bashrc
 echo "export ROS_PACKAGE_PATH=/home/ubuntu/interbotix_ws/src:$ROS_PACKAGE_PATH" >> ~/.bashrc
 echo "export PYTHONPATH=/home/ubuntu/interbotix_ws/devel/lib/python2.7/dist-packages:$PYTHONPATH" >> ~/.bashrc
 
