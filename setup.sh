@@ -21,7 +21,7 @@ rm xsarm_rpi4_install.sh
 cd ~/aws_ws
 rosdep update
 rosdep install --from-paths src --ignore-src --rosdistro melodic -r -y
-catkin build
+catkin_make
 
 echo "source ~/aws_ws/devel/setup.bash" >> ~/.bashrc
 echo "export ROS_PACKAGE_PATH=/home/ubuntu/interbotix_ws/src:$ROS_PACKAGE_PATH" >> ~/.bashrc
