@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 
-#export DISPLAY=:0
-
-sudo apt update
-sudo apt upgrade -y
+sudo apt update && sudo apt upgrade -y
 
 sudo apt install python-pip fswebcam awscli -y
 pip install boto3
@@ -27,8 +24,6 @@ rosdep update
 rosdep install --from-paths src --ignore-src --rosdistro melodic -r -y
 catkin build
 
-#echo "export SVGA_VGPU10=0" >> ~/.bashrc
-echo "export DISPLAY=:0" >> ~/.bashrc
 echo "source ~/aws_ws/devel/setup.bash" >> ~/.bashrc
 echo "export ROS_PACKAGE_PATH=/home/ubuntu/interbotix_ws/src:$ROS_PACKAGE_PATH" >> ~/.bashrc
 echo "export PYTHONPATH=/home/ubuntu/interbotix_ws/devel/lib/python2.7/dist-packages:$PYTHONPATH" >> ~/.bashrc
