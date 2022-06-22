@@ -91,7 +91,14 @@
     <node pkg="robomaker_workshop" name="init" type="init.py" output="screen" />
     
     <!--+++++++++++++++++ Publish local USB camera stream ++++++++++++++++++-->
-    <!--<include file="$(find robomaker_workshop)/launch/camera.launch" />-->
+    <include file="$(find robomaker_workshop)/launch/camera.launch" />
+
+    <!--+++++++++++++ Start utility for capturing camera shots +++++++++++++-->
+    <node name="image_saver" pkg="image_view" type="image_saver" output="screen">
+      <remap from="image" to="camera/image_raw" />
+      <param name="save_all_image" value="false" />
+      <param name="filename_format" value="$(find robomaker_workshop)/images/image_cap.png" />
+    </node>
     
   </group>
   
