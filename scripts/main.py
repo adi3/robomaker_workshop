@@ -8,7 +8,7 @@ from px100 import PX100
 import utilities as util
 
 
-SIM_MODEL_ARN     = "arn:aws:rekognition:eu-central-1:517502204741:project/PX100-Sim/version/PX100-Sim.2022-04-25T09.51.03/1650873063273"
+SIM_MODEL_ARN     = "arn:aws:rekognition:us-east-2:007281172979:project/ai-robotics-sim/version/ai-robotics-sim.2021-11-01T16.37.01/1635799021948"
 REAL_MODEL_ARN    = "arn:aws:rekognition:us-east-2:007281172979:project/ai-robotics-reinvent-2021/version/ai-robotics-reinvent-2021.2021-12-01T11.57.19/1638377839210"
 IMAGE_NAME        = "src/robomaker_workshop/images/image_cap.png"
 ACCESS_PROFILE    = "robomaker_workshop"
