@@ -16,6 +16,7 @@
   <exec_depend>image_view</exec_depend>
   <exec_depend>kinesis_video_streamer</exec_depend>
   <exec_depend>h264_video_encoder</exec_depend>
+  <exec_depend>joint_trajectory_controller</exec_depend>
 
   <export>
     <gazebo_ros gazebo_model_path="${prefix}/models" gazebo_resource_path="${prefix}"/>
