@@ -18,6 +18,11 @@ chmod +x xsarm_rpi4_install.sh
 ./xsarm_rpi4_install.sh
 rm xsarm_rpi4_install.sh
 
+# Temporary fix to last upstream working version
+cd /home/ubuntu/environment/aws_ws/src/interbotix_ros_toolboxes
+git checkout 1c8652021575e8980eb592aaa13ad294147329a0
+cd -
+
 #echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
 #echo "source ~/aws_ws/devel/setup.bash" >> ~/.bashrc
 #echo "export ROS_PACKAGE_PATH=/home/ubuntu/interbotix_ws/src:$ROS_PACKAGE_PATH" >> ~/.bashrc
