@@ -18,9 +18,11 @@ curl https://raw.githubusercontent.com/Interbotix/interbotix_ros_manipulators/ma
 chmod +x xsarm_rpi4_install.sh
 ./xsarm_rpi4_install.sh
 rm xsarm_rpi4_install.sh
+mv ~/interbotix_ws/src/* ~/aws_ws/src/
+rm -rf ~/interbotix_ws
 
 # Temporary fix to last upstream working version
-cd /home/ubuntu/environment/aws_ws/src/interbotix_ros_toolboxes
+cd ~/aws_ws/src/interbotix_ros_toolboxes
 git checkout 1c8652021575e8980eb592aaa13ad294147329a0
 cd -
 
@@ -31,8 +33,6 @@ echo "source ~/aws_ws/devel/setup.bash" >> ~/.bashrc
 
 # Build workspace
 cd ~/aws_ws
-mv ~/interbotix_ws/src/* ~/aws_ws/src/
-rm -rf ~/interbotix_ws
 rosdep update
 rosdep install --from-paths src --ignore-src --rosdistro melodic -r -y
 source /opt/ros/melodic/setup.bash
