@@ -9,22 +9,24 @@ pip install boto3
 #aws configure set profile.robomaker_workshop.source_profile default
 #aws configure set profile.robomaker_workshop.region eu-central-1
 
-mkdir -p ~/aws_ws/src/ && cd ~/aws_ws/src/
-git clone -b completed https://github.com/adi3/robomaker_workshop
-
-# Pull dependencies
+# Pull robot dependencies
 cd ~/
 curl https://raw.githubusercontent.com/Interbotix/interbotix_ros_manipulators/main/interbotix_ros_xsarms/install/rpi4/xsarm_rpi4_install.sh > xsarm_rpi4_install.sh
 chmod +x xsarm_rpi4_install.sh
 ./xsarm_rpi4_install.sh -n -p ~/aws_ws
-rm xsarm_rpi4_install.sh
-mv ~/interbotix_ws/src/* ~/aws_ws/src/
-rm -rf ~/interbotix_ws
+#rm xsarm_rpi4_install.sh
+#mv ~/interbotix_ws/src/* ~/aws_ws/src/
+#rm -rf ~/interbotix_ws
 
 # Temporary fix to last upstream working version
 cd ~/aws_ws/src/interbotix_ros_toolboxes
 git checkout 1c8652021575e8980eb592aaa13ad294147329a0
 cd -
+
+# Pull AWS application
+#mkdir -p ~/aws_ws/src/ && cd ~/aws_ws/src/
+cd ~/aws_ws/src/
+git clone -b completed https://github.com/adi3/robomaker_workshop
 
 #echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
 echo "source ~/aws_ws/devel/setup.bash" >> ~/.bashrc
